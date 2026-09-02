@@ -1,0 +1,92 @@
+--Aqui cria uma tabela curso
+create table curso (
+	codigo INT PRIMARY KEY,
+	nome VARCHAR(30) NOT NULL,
+	valor NUMERIC (6,2) CHECK (valor>=0 AND valor <= 1000) DEFAULT 100,
+	email VARCHAR(30) UNIQUE,
+	turno CHAR(1) CHECK (turno IN ('M','T','N','m','t','n'))
+	--turno CHAR(1) CHECK (turno = 'M' OR turno = 'T' OR turno = 'N')
+	--Pode fazer assim pra comentar
+);
+
+--Aqui apaga a tabela curso
+DROP TABLE curso;
+
+--Aqui é um exemplo completo de linha da tabela
+INSERT INTO curso VALUES (1, 'Banco de Dados', 1, 'yanmesko@gmail.com','M');
+
+--Aqui da erro no check de nome, na verdade deu erro em tudo
+INSERT INTO curso (codigo) VALUES (NULL);
+
+--Aqui dá erro no check de valor
+INSERT INTO curso VALUES (1, 'Banco de Dados', -1, 'example@gmail.com','M');
+
+--Aqui dá erro no código de PK
+INSERT INTO curso VALUES (1, 'Banco de Dados', 1, 'yanmesko@gmail.com','M');
+
+--Aqui dá erro no check de email
+INSERT INTO curso VALUES (2, 'Banco de Dados', 1, 'yanmesko@gmail.com','M');
+
+--Aqui só inseriu codigo e nome, value ficou 100 como default
+INSERT INTO curso (codigo, nome) VALUES (2, 'LPW');
+
+--Aqui é pra visualizar a tabela
+SELECT * FROM curso;
+
+--Aqui cria a tabela aluno com a matricula auto-incrementando o nome obrigatorio e uma chave estrangeira
+--para aluno para referenciar o curso por causa da relação 1:N em curso 1 -> n Aluno
+CREATE TABLE aluno (
+	matricula SERIAL PRIMARY KEY,
+	nome varchar(50) NOT NULL,
+	codigocurso INT,
+	FOREIGN KEY (codigocurso) REFERENCES curso (codigo)
+);
+
+--Aqui é pra inserir um aluno no curso 1 
+INSERT INTO aluno (nome, codigocurso) VALUES ('Yan', 1);
+INSERT INTO aluno (nome, codigocurso) VALUES ('Satoshi', 1);
+INSERT INTO aluno (nome, codigocurso) VALUES ('Maria', 1);
+INSERT INTO aluno (nome, codigocurso) VALUES ('Yan', 2);
+
+--Aqui da erro porque o curso 3 não existe, mas aumentou a matrícula global?
+INSERT INTO aluno (nome, codigocurso) VALUES ('Eduarda', 4);
+
+--Aqui visualiza tudo de aluno
+SELECT * FROM aluno;
+
+--Aqui visualiza aluno x curso
+SELECT * FROM aluno, curso WHERE aluno.codigocurso=curso.codigo;
+
+--Aqui então pega só dos alunos do curso 2
+SELECT * FROM aluno WHERE aluno.codigocurso='2';
+SELECT * FROM aluno WHERE aluno.codigocurso='3';
+
+--Tá agora se eu quiser inserir um curso novo
+INSERT INTO curso (codigo, nome) VALUES (3, 'LPO');
+
+INSERT INTO aluno (nome, codigocurso) VALUES ('Yan', 3);
+
+--Agora uns filtros, aqui mostra todos bem bonitos
+SELECT aluno.matricula, aluno.nome, curso.nome FROM aluno, curso 
+WHERE aluno.codigocurso = curso.codigo;
+
+--Aqui pega só os que fazem BD1
+SELECT aluno.matricula, aluno.nome, curso.nome FROM aluno, curso 
+WHERE aluno.codigocurso = curso.codigo AND curso.nome = 'Banco de Dados';
+
+
+--Aqui cria uma tabela com chaves compostas (duas ou mais PKs)
+CREATE TABLE alunoteste (
+	matricula SERIAL,
+	nome varchar(50) NOT NULL,
+	codigocurso INT,
+	FOREIGN KEY (codigocurso) REFERENCES curso (codigo),
+	PRIMARY KEY (matricula, nome)
+);
+
+SELECT * FROM alunoteste;
+
+DROP TABLE alunoteste;
+
+--Pra semana que vem ficou descobrir os nomes atribuidos as 
+--Restrições de tipos e etc para quando quisermos alterar poder dizer o que queremos alterar
