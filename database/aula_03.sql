@@ -85,6 +85,16 @@ CREATE TABLE alunoteste (
 );
 
 SELECT * FROM alunoteste;
+SELECT * FROM curso;
+
+--Aqui cria aluno caiozera curso 2
+INSERT INTO alunoteste(nome,codigocurso) VALUES ('Caiozera',2);
+
+--Aqui cria aluno theobardo curso 3
+INSERT INTO alunoteste(nome,codigocurso) VALUES ('Theobardo',3);
+
+--Aí atualiza o curso de quem é a matrícula 2
+UPDATE alunoteste SET codigocurso = 2 WHERE matricula = 2;
 
 DROP TABLE alunoteste;
 
