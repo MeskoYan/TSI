@@ -1,0 +1,3 @@
+Esse arquivo tem
+testes de várias linhas
+tudo para ser lido lido leitor

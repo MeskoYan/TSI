@@ -1,0 +1,4 @@
+Nome: yan
+Quantidade de avaliações: 3
+Notas: 10; 10; 10; 
+Media do yan: 10
