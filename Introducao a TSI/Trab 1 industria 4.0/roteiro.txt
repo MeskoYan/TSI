@@ -1,0 +1,110 @@
+Ideia 1 
+
+vamos falar de inteligencia artificial 
+
+slide 1 - o que é 
+aí conta a história qual foi a primeira aplicação como surgiram as terminologias etc etc
+aí slide 2 - principais aparições ao longo da história
+quem esteve por trás qual era a ideia etc
+slide 3 - boom das IAs
+porque aconteceu, como, onde, quem lidera esse mercado
+slide 4 - outros topicos pedidos
+slide 5 - final
+
+Roteiro começo
+
+pode começar professor?
+
+certo, então Boa noite a todos, eu, yan e meus amigos caio e Stefan vamos apresentar agora o seminário sobre inteligencia artificial na industria 4.0
+
+primeiramente eu acho que todos os colegas já estão familiarizados com o termo IA, visto o crescimento dos chatbots como chatgpt e gemini, o termo IA ficou bastante difundido mesmo pra quem não é da área da tecnologia.
+
+Mas eu convido os colegas a se perguntarem qual é por definição o conceito de IA no meio profissional ou então academico
+
+-passa slide
+-aponta pro slide
+
+Bom, então de acordo com a IBM e o Google e a microsoft, que possuem alguns artigos sobre o tema, IA é um campo da ciência da computação que se dedica ao estudo e desenvolvimento de máquinas e programas capazes de reproduzir ou simular o comportamento humano na tomada de decisoes, resoluções de tarefas e entre outras situações que exigem conhecimento e discernimento humano humana para serem realizadas.
+
+*analisar trecho
+
+-passa slide
+
+Dessa forma algumas das capacidades teoricamente falando de aplicativos e dispositivos equipados com IA sao capazes de ver e identificar objetos, responder a linguagem humana, aprender novos conhecimentos e experiências, compartilhar recomendações de produtos, serviços e entre outros.
+
+
+Entao analisando por essa definição algumas das possibilidades da IA seriam Ver e identificar objetos;
+Responder a linguagem humana;
+Aprender novos conhecimentos;
+Compartilhar recomendações, sugestões de produtos, serviços e entre outros.
+
+Bom então hoje em dia quem utiliza IA sabe que esses 4 tópicos estao sendo muito bem atendidos, sendo a IA atualmente capaz de simular muitos comportamentos humanos
+
+dito isso, onde surge essa ideia de IA? 
+Bom a ideia remonta a tempos antigos, com antigos inventores e pensadores tendo seus palpites sobre máquinas e automatos capazes de simular o comportamento humano
+
+entao por exemplo, aristoteles falava sobre 
+
+*analisar trecho
+
+-passa slide
+
+Tá mas, quando, como e onde surgiu?
+
+Então... a ideia de criar máquinas que imitassem a inteligência humana vem desde tempos antigos com mitos e lendas sobre autômatos e máquinas pensantes. Aristoteles pensava por exemplo em substituir a mao de obra escrava por ferramentas autonomas, e ao longo alguns inventores até tentaram reproduzir seus próprios robôs como por exemplo o cavaleiro mecânico de leonardo da vinci, capaz de simular alguns movimentos humanos como levantar, sentar, fechar o visor do seu elmo através de um sistema de polias e cabos.
+
+*analisar trecho
+(se perguntarem citar o cavaleiro mecânico de leonardo da vinci, um automato capaz de sentar, levantar e mover os braços simulando o corpo humano com sistemas de polias e cabos, da vinci é de 1495)
+(se perguntarem falar das serventes douradas na ilíada que eram robos que serviam para auxiliar na movimentação do seu criador, manco de nascença)
+descartes ja falou sobre automatos em discurso sobre o metodo em 1637
+definindo o que separa o automato do humano como sendo a insuficiencia da resposta linguistica apropriada em testes como esse de diferenciação.
+*analisar trecho
+
+-passa slide
+Mas só no século XX com o advento da computação é que os estudos a cerca da recriação da inteligência humana em máquinas foi retomado com força total. A primeira faísca da IA foi em 1943 quando McCulloch e Pitts apresentaram um modelo de neurônios artificiais, que foi considerado como a primeira inteligência artificial. 
+-passa slide
+
+Na sequência em 1950, o primeiro artigo que conteve o termo Inteligencia artificial foi publicado por alan turing , mais conhecido como pai da computação, em 1950. Em um trecho desse artigo ele propunha o jogo da imitação em que um "jogador" deveria adivinhar qual dos outros dois jogadores é um computador de acordo com as respotas as perguntas previamente escritas, afim de determinar se máquinas poderiam minimamente se assemelhar ao comportamento humano.
+
+*anotar
+oque causava surpresa, foi o fato de um computador realizar atividade remotamente inteligente.
+*anotar
+
+-passa slide
+Bom, existe um filme que apesar de ter o nome do jogo proposto por turing, na verdade retrata sobre a vida dele e como ele usou computadores, ainda muito primordiais, para decifrar enigmas alemães e alterar o rumo da segunda guerra mundial obtendo assim informações de ataques de tropas alemãs e outros dados que estavam criptografados naquelas mensagens. Inclusive muito bom esse filme, eu assisti e vale muito a pena, o benedict cumberbach também é um baita ator. Mas seguindo !
+
+-passa slide
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
