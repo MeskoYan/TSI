@@ -11,9 +11,7 @@ public:
     bool inserir(TIPO val);
     TIPO obter();
 
-    TIPO ver(){
-        return v[0];
-    }
+    TIPO ver();
 };
 
 
