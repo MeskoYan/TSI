@@ -1,0 +1,1995 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fácil Serviço — Prévia Visual e Design System (Sprint IV)</title>
+
+  <!-- Google Fonts: Poppins (600, 700) e Inter (400, 500, 600, 700) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            poppins: ['Poppins', 'sans-serif'],
+            inter: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              primary: '#1D4ED8',
+              deep: '#1E3A8A',
+              soft: '#DBEAFE',
+            },
+            pro: {
+              primary: '#C2410C',
+              hover: '#9A3412',
+              soft: '#FFEDD5',
+            },
+            neutral: {
+              bg: '#F8FAFC',
+              surface: '#FFFFFF',
+              border: '#CBD5E1',
+              control: '#64748B',
+              secondary: '#475569',
+              primary: '#0F172A',
+            },
+            feedback: {
+              success: '#15803D',
+              successBg: '#F0FDF4',
+              warn: '#B45309',
+              warnBg: '#FFFBEB',
+              error: '#B91C1C',
+              errorBg: '#FEF2F2',
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* Tipografia padrão da aplicação */
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #F1F5F9;
+      color: #0F172A;
+    }
+
+    /* Classes tipográficas exatas do Design System */
+    .ds-h1 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 24px;
+      line-height: 32px;
+    }
+    .ds-h2 {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 26px;
+    }
+    .ds-h3 {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 24px;
+    }
+    .ds-body {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 24px;
+    }
+    .ds-secondary {
+      font-family: 'Inter', sans-serif;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+    }
+    .ds-label {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 20px;
+    }
+    .ds-btn-text {
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 24px;
+    }
+    .ds-caption {
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 16px;
+    }
+
+    /* Scrollbar limpa dentro do frame mobile */
+    .phone-scroll::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+    .phone-scroll::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .phone-scroll::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 9999px;
+    }
+
+    /* Ocultar scrollbar em carrossel horizontal de categorias */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Foco visível acessível WCAG 2.2 */
+    .ds-input:focus {
+      outline: none;
+      border-color: #1E3A8A;
+      box-shadow: 0 0 0 2px #1E3A8A;
+    }
+    .ds-focus-simulated {
+      border-color: #1E3A8A !important;
+      box-shadow: 0 0 0 2px #1E3A8A !important;
+    }
+
+    /* Escala limpa para miniaturas na Galeria Lado a Lado */
+    .gallery-thumb-shell {
+      width: 265px;
+      height: 525px;
+      overflow: hidden;
+      position: relative;
+      border-radius: 26px;
+      border: 6px solid #0F172A;
+      background: #F8FAFC;
+      box-shadow: 0 12px 30px -10px rgba(15, 23, 42, 0.18);
+    }
+    .gallery-thumb-scaler {
+      width: 390px;
+      height: 778px;
+      transform: scale(0.6487);
+      transform-origin: top left;
+      pointer-events: none;
+    }
+
+    /* Badge de ordem de foco de teclado (RNF-A02) */
+    .tab-badge {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      width: 22px;
+      height: 22px;
+      border-radius: 9999px;
+      background-color: #1E3A8A;
+      color: #FFFFFF;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.25);
+      z-index: 20;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- ===================================================================== -->
+  <!-- BARRA SUPERIOR (ESTILO APRESENTAÇÃO FIGMA)                            -->
+  <!-- ===================================================================== -->
+  <header class="sticky top-0 z-40 bg-[#FFFFFF] border-b border-[#CBD5E1] shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+      <!-- Identificação do Projeto -->
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-[#1D4ED8] text-white flex items-center justify-center shrink-0 shadow-sm">
+          <!-- Ícone Casa/Ferramenta -->
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 10.5L12 3l9 7.5" />
+            <path d="M5 9.5V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5" />
+            <path d="M14.5 13.5l-5 5" />
+            <path d="M10 13.5h4.5V18" />
+          </svg>
+        </div>
+        <div>
+          <h1 class="font-poppins font-bold text-base sm:text-lg text-[#0F172A] leading-tight">
+            Fácil Serviço — Prévia Visual (Sprint IV)
+          </h1>
+          <p class="text-xs text-[#475569]">
+            Projeto Pelotas Conecta · Frame Mobile 390px · WCAG 2.2 AA
+          </p>
+        </div>
+      </div>
+
+      <!-- 3 Abas Principais de Visualização -->
+      <nav class="flex flex-wrap items-center gap-1.5 bg-[#F8FAFC] p-1 rounded-xl border border-[#CBD5E1]" aria-label="Modos de visualização">
+        <button
+          id="tab-btn-prototype"
+          onclick="switchMainTab('prototype')"
+          class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all cursor-pointer"
+        >
+          Protótipo Interativo (390px)
+        </button>
+        <button
+          id="tab-btn-gallery"
+          onclick="switchMainTab('gallery')"
+          class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all cursor-pointer"
+        >
+          Galeria de Telas (Lado a Lado)
+        </button>
+        <button
+          id="tab-btn-ds"
+          onclick="switchMainTab('ds')"
+          class="px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all cursor-pointer"
+        >
+          Design System (Cores e Fontes)
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===================================================================== -->
+  <!-- CONTEÚDO PRINCIPAL                                                    -->
+  <!-- ===================================================================== -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6">
+
+    <!-- =================================================================== -->
+    <!-- ABA 1: PROTÓTIPO INTERATIVO (390px)                                 -->
+    <!-- =================================================================== -->
+    <section id="view-prototype" class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+      <!-- COLUNA ESQUERDA: LISTA DE TELAS E CONTROLES DE ESTADO -->
+      <aside class="lg:col-span-3 space-y-4">
+        <div class="bg-[#FFFFFF] border border-[#CBD5E1] rounded-2xl p-4 shadow-sm">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="text-xs font-bold uppercase tracking-wider text-[#475569]">
+              Mapa de Telas
+            </h2>
+            <span class="text-[11px] font-medium px-2 py-0.5 rounded-full bg-[#DBEAFE] text-[#1E3A8A]">
+              8 telas + estados
+            </span>
+          </div>
+
+          <div id="screen-nav-list" class="space-y-4">
+            <!-- Preenchido via JS -->
+          </div>
+        </div>
+
+        <!-- Painel de Controles Rápidos de Estado (contextual) -->
+        <div id="state-controls-card" class="bg-[#FFFFFF] border border-[#CBD5E1] rounded-2xl p-4 shadow-sm hidden">
+          <div class="flex items-center gap-2 mb-2.5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1D4ED8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="3" />
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9c.26.6.85 1 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" />
+            </svg>
+            <h3 class="text-xs font-bold uppercase tracking-wider text-[#0F172A]">
+              Estados da Tela (RNF)
+            </h3>
+          </div>
+          <div id="state-controls-buttons" class="flex flex-col gap-2">
+            <!-- Preenchido via JS -->
+          </div>
+          <div id="tab-order-toggle-wrapper" class="mt-3 pt-3 border-t border-[#CBD5E1] hidden">
+            <label class="flex items-center justify-between gap-2 text-xs text-[#475569] cursor-pointer select-none">
+              <span class="font-medium">Exibir ordem de foco (Tab 1–4)</span>
+              <input
+                id="toggle-tab-order"
+                type="checkbox"
+                checked
+                onchange="toggleTabOrderBadges(this.checked)"
+                class="w-4 h-4 accent-[#1D4ED8] rounded cursor-pointer"
+              />
+            </label>
+          </div>
+        </div>
+      </aside>
+
+      <!-- CENTRO: FRAME MOBILE REALISTA 390px -->
+      <div class="lg:col-span-6 flex flex-col items-center">
+        <!-- Indicador da Tela Atual acima do aparelho -->
+        <div class="w-full max-w-[390px] flex items-center justify-between mb-2.5 px-1">
+          <div class="flex items-center gap-2">
+            <span id="active-screen-badge" class="px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#DBEAFE] text-[#1E3A8A]">
+              T01
+            </span>
+            <span id="active-screen-name" class="text-sm font-semibold text-[#0F172A]">
+              Página Inicial
+            </span>
+          </div>
+          <span class="text-xs font-medium text-[#475569] bg-[#FFFFFF] border border-[#CBD5E1] px-2 py-0.5 rounded-md">
+            390 × 780 px
+          </span>
+        </div>
+
+        <!-- Moldura do Smartphone (exatamente 390px de tela interna) -->
+        <div class="w-full max-w-[406px] rounded-[36px] bg-[#0F172A] p-2 shadow-2xl border border-[#334155]">
+          <div class="w-full max-w-[390px] mx-auto h-[760px] rounded-[28px] bg-[#F8FAFC] overflow-hidden flex flex-col relative">
+            <!-- Status Bar Discreta -->
+            <div class="h-8 bg-[#FFFFFF] px-5 flex items-center justify-between text-[11px] font-semibold text-[#0F172A] border-b border-[#F1F5F9] shrink-0 select-none">
+              <span>19:54</span>
+              <div class="w-16 h-3.5 bg-[#0F172A] rounded-full"></div>
+              <div class="flex items-center gap-1.5 text-[#0F172A]">
+                <!-- Sinal -->
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                  <path d="M2 20h.01M7 20v-4M12 20v-8M17 20V8M22 20V4" />
+                </svg>
+                <!-- Wifi -->
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                  <path d="M5 12.55a11 11 0 0 1 14.08 0M8.53 16.11a6 6 0 0 1 6.95 0M12 20h.01" />
+                </svg>
+                <!-- Bateria -->
+                <svg width="15" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                  <rect x="2" y="7" width="16" height="10" rx="2" />
+                  <path d="M22 11v2" />
+                  <rect x="4" y="9" width="10" height="6" fill="currentColor" stroke="none" rx="1" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- Área de Renderização da Tela Ativa -->
+            <div id="phone-viewport" class="flex-1 flex flex-col overflow-hidden bg-[#F8FAFC]">
+              <!-- Renderizado dinamicamente via JS -->
+            </div>
+          </div>
+        </div>
+
+        <p class="mt-3 text-xs text-[#475569] text-center max-w-[390px]">
+          Dica: clique nos botões, pílulas, cartões e barra inferior dentro do celular para navegar pelo fluxo real.
+        </p>
+      </div>
+
+      <!-- COLUNA DIREITA: PAINEL AUXILIAR DE TOKENS DA TELA ATUAL -->
+      <aside class="lg:col-span-3 space-y-4">
+        <div class="bg-[#FFFFFF] border border-[#CBD5E1] rounded-2xl p-4 shadow-sm">
+          <div class="flex items-center justify-between mb-3">
+            <h2 class="text-xs font-bold uppercase tracking-wider text-[#475569]">
+              Cores nesta tela
+            </h2>
+            <span class="text-[11px] text-[#64748B]">Clique p/ copiar</span>
+          </div>
+          <div id="inspector-colors" class="space-y-2">
+            <!-- Preenchido via JS -->
+          </div>
+        </div>
+
+        <div class="bg-[#FFFFFF] border border-[#CBD5E1] rounded-2xl p-4 shadow-sm">
+          <h2 class="text-xs font-bold uppercase tracking-wider text-[#475569] mb-3">
+            Tipografia aplicada
+          </h2>
+          <div id="inspector-typography" class="space-y-2.5">
+            <!-- Preenchido via JS -->
+          </div>
+        </div>
+      </aside>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- ABA 2: GALERIA DE TELAS (LADO A LADO)                               -->
+    <!-- =================================================================== -->
+    <section id="view-gallery" class="hidden space-y-6">
+      <div class="bg-[#FFFFFF] border border-[#CBD5E1] rounded-2xl p-5 shadow-sm flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <h2 class="ds-h2 text-[#0F172A]">Visão Panorâmica — Harmonia entre Fluxos</h2>
+          <p class="ds-secondary text-[#475569] mt-1">
+            Compare lado a lado o fluxo do <strong>Morador (Azul Confiança #1D4ED8)</strong> e do <strong>Profissional (Laranja Obra #C2410C)</strong> sobre a base neutra <strong>Cinza Gelo #F8FAFC</strong>. Clique em qualquer tela para interagir com ela em tamanho real.
+          </p>
+        </div>
+        <div class="flex items-center gap-2 shrink-0">
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#DBEAFE] text-[#1E3A8A]">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#1D4ED8]"></span> Morador (Lucas)
+          </span>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-[#FFEDD5] text-[#C2410C]">
+            <span class="w-2.5 h-2.5 rounded-full bg-[#C2410C]"></span> Profissional (Roberto)
+          </span>
+        </div>
+      </div>
+
+      <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center">
+        <!-- Miniaturas renderizadas via JS -->
+      </div>
+    </section>
+
+    <!-- =================================================================== -->
+    <!-- ABA 3: DESIGN SYSTEM (CORES, TIPOGRAFIA E COMPONENTES)              -->
+    <!-- =================================================================== -->
+    <section id="view-ds" class="hidden space-y-8">
+
+      <!-- 3.1 PALETA DE CORES -->
+      <div class="bg-[#FFFFFF] border border-[#CBD5E1] rounded-2xl p-6 shadow-sm space-y-6">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-[#CBD5E1] pb-4">
+          <div>
+            <span class="text-xs font-bold uppercase tracking-wider text-[#1D4ED8]">01 · Cores e Contraste</span>
+            <h2 class="ds-h1 text-[#0F172A] mt-0.5">Paleta Oficial — Fácil Serviço</h2>
+            <p class="ds-secondary text-[#475569] mt-1">
+              Harmonia complementar (Azul Confiança + Laranja Obra) equilibrada por neutros claros. Clique em qualquer código HEX para copiar para o Figma.
+            </p>
+          </div>
+          <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#F0FDF4] border border-[#15803D] text-[#15803D] text-xs font-semibold self-start sm:self-auto">
+            ✓ Todas combinações de texto ≥ 4,5:1 (WCAG 2.2 AA)
+          </span>
+        </div>
+
+        <div id="ds-colors-container" class="space-y-6">
+          <!-- Renderizado via JS -->
+        </div>
+      </div>
+
+      <!-- 3.2 TIPOGRAFIA -->
+      <div class="bg-[#FFFFFF] border border-[#CBD5E1] rounded-2xl p-6 shadow-sm space-y-5">
+        <div class="border-b border-[#CBD5E1] pb-4">
+          <span class="text-xs font-bold uppercase tracking-wider text-[#1D4ED8]">02 · Escala Tipográfica (Mobile 390px)</span>
+          <h2 class="ds-h1 text-[#0F172A] mt-0.5">Tipografia — Poppins + Inter</h2>
+          <p class="ds-secondary text-[#475569] mt-1">
+            <strong>Poppins</strong> nos títulos para personalidade e hierarquia imediata; <strong>Inter</strong> nos textos, botões e rótulos para máxima legibilidade em telas pequenas (base 16px).
+          </p>
+        </div>
+
+        <div id="ds-typography-container" class="divide-y divide-[#CBD5E1]">
+          <!-- Renderizado via JS -->
+        </div>
+      </div>
+
+      <!-- 3.3 COMPONENTES REUTILIZÁVEIS E ESTADOS -->
+      <div class="bg-[#FFFFFF] border border-[#CBD5E1] rounded-2xl p-6 shadow-sm space-y-6">
+        <div class="border-b border-[#CBD5E1] pb-4">
+          <span class="text-xs font-bold uppercase tracking-wider text-[#1D4ED8]">03 · Componentes Reutilizáveis</span>
+          <h2 class="ds-h1 text-[#0F172A] mt-0.5">Botões, Campos, Pílulas e Feedback</h2>
+          <p class="ds-secondary text-[#475569] mt-1">
+            Alvos de toque com altura mínima de 48px, cantos arredondados consistentes (12px) e estados de foco, seleção e erro sempre acompanhados de ícone e texto.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- Botões -->
+          <div class="bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl p-5 space-y-4">
+            <h3 class="ds-h3 text-[#0F172A]">Botões e Ações (CTA ≥ 48px)</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <div>
+                <p class="ds-caption text-[#475569] mb-1.5">Primário Morador (#1D4ED8)</p>
+                <button class="w-full h-12 rounded-xl bg-[#1D4ED8] hover:bg-[#1E3A8A] text-white ds-btn-text transition-colors shadow-sm">
+                  Solicitar Orçamento
+                </button>
+              </div>
+              <div>
+                <p class="ds-caption text-[#475569] mb-1.5">Estado Pressionado / Foco (#1E3A8A)</p>
+                <button class="w-full h-12 rounded-xl bg-[#1E3A8A] text-white ds-btn-text ring-2 ring-offset-2 ring-[#1E3A8A]">
+                  Solicitar Orçamento
+                </button>
+              </div>
+              <div>
+                <p class="ds-caption text-[#475569] mb-1.5">Destaque Profissional (#C2410C)</p>
+                <button class="w-full h-12 rounded-xl bg-[#C2410C] hover:bg-[#9A3412] text-white ds-btn-text transition-colors shadow-sm">
+                  Sou Profissional
+                </button>
+              </div>
+              <div>
+                <p class="ds-caption text-[#475569] mb-1.5">Secundário Outline (#1D4ED8)</p>
+                <button class="w-full h-12 rounded-xl bg-[#FFFFFF] border-2 border-[#1D4ED8] text-[#1D4ED8] hover:bg-[#DBEAFE] ds-btn-text transition-colors">
+                  Ver Perfil
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pílulas e Badges -->
+          <div class="bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl p-5 space-y-5">
+            <div>
+              <h3 class="ds-h3 text-[#0F172A] mb-3">Pílulas de Categoria (T02 / T03)</h3>
+              <div class="flex flex-wrap gap-2">
+                <span class="px-4 py-2 rounded-full text-sm font-semibold bg-[#DBEAFE] text-[#1E3A8A] border border-[#1D4ED8]">
+                  Elétrica (Selecionada)
+                </span>
+                <span class="px-4 py-2 rounded-full text-sm font-medium bg-[#FFFFFF] text-[#475569] border border-[#CBD5E1]">
+                  Hidráulica
+                </span>
+                <span class="px-4 py-2 rounded-full text-sm font-medium bg-[#FFFFFF] text-[#475569] border border-[#CBD5E1]">
+                  Pintura
+                </span>
+              </div>
+            </div>
+
+            <div>
+              <h3 class="ds-h3 text-[#0F172A] mb-3">Badges de Feedback (Texto + Ícone)</h3>
+              <div class="flex flex-wrap gap-2.5">
+                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#F0FDF4] text-[#15803D] border border-[#15803D]/30">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                  Verificado / Pago
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#FFFBEB] text-[#B45309] border border-[#B45309]/30">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                  Retido (Seguro)
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold bg-[#FEF2F2] text-[#B91C1C] border border-[#B91C1C]/30">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  Erro de validação
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Campos de Formulário e Estados -->
+          <div class="lg:col-span-2 bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl p-5 space-y-4">
+            <h3 class="ds-h3 text-[#0F172A]">Campos de Texto — Estados (Normal, Foco Visível e Erro)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <!-- Normal -->
+              <div>
+                <label class="block ds-label text-[#0F172A] mb-1.5">Estado Normal</label>
+                <input
+                  type="text"
+                  value="Troca de disjuntor na cozinha"
+                  readonly
+                  class="w-full h-12 px-3.5 rounded-xl bg-[#FFFFFF] border border-[#64748B] ds-body text-[#0F172A]"
+                />
+                <p class="ds-caption text-[#475569] mt-1">Borda #64748B sobre fundo #FFFFFF</p>
+              </div>
+              <!-- Foco -->
+              <div>
+                <label class="block ds-label text-[#0F172A] mb-1.5">Estado de Foco (WCAG)</label>
+                <input
+                  type="text"
+                  value="Digitando descrição..."
+                  readonly
+                  class="w-full h-12 px-3.5 rounded-xl bg-[#FFFFFF] border-2 border-[#1E3A8A] ring-2 ring-[#1E3A8A]/25 ds-body text-[#0F172A]"
+                />
+                <p class="ds-caption text-[#1E3A8A] mt-1">Contorno nítido #1E3A8A (2px)</p>
+              </div>
+              <!-- Erro -->
+              <div>
+                <label class="block ds-label text-[#0F172A] mb-1.5">Estado de Erro (RNF-U02)</label>
+                <input
+                  type="text"
+                  value="Fio solto"
+                  readonly
+                  class="w-full h-12 px-3.5 rounded-xl bg-[#FFFFFF] border-2 border-[#B91C1C] ds-body text-[#0F172A]"
+                />
+                <div class="mt-1.5 flex items-start gap-1.5 text-xs font-medium text-[#B91C1C] bg-[#FEF2F2] px-2.5 py-1.5 rounded-lg border border-[#B91C1C]/30">
+                  <svg class="shrink-0 mt-0.5" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                  <span>Descreva com pelo menos 15 caracteres.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===================================================================== -->
+  <!-- TOAST DE NOTIFICAÇÃO (SEM ALERT)                                      -->
+  <!-- ===================================================================== -->
+  <div
+    id="toast"
+    role="status"
+    aria-live="polite"
+    class="fixed bottom-5 right-5 z-50 translate-y-20 opacity-0 pointer-events-none transition-all duration-300 bg-[#0F172A] text-white px-4 py-2.5 rounded-xl shadow-lg flex items-center gap-2 text-sm font-medium"
+  >
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20 6L9 17l-5-5" />
+    </svg>
+    <span id="toast-message">HEX copiado!</span>
+  </div>
+
+  <!-- ===================================================================== -->
+  <!-- LÓGICA DA APLICAÇÃO E RENDERIZAÇÃO DAS TELAS                          -->
+  <!-- ===================================================================== -->
+  <script>
+    // =========================================================================
+    // 1. DADOS OFICIAIS DO DESIGN SYSTEM
+    // =========================================================================
+    const COLOR_PALETTE = [
+      // Principal (Morador)
+      { group: 'Principal — Marca e Fluxo do Morador (Lucas)', name: 'Azul Confiança', hex: '#1D4ED8', role: 'Botões principais (CTAs), cabeçalhos de destaque e ícones ativos na navegação do morador.', contrast: '6,70:1 (#FFF)', wcag: 'AA' },
+      { group: 'Principal — Marca e Fluxo do Morador (Lucas)', name: 'Azul Profundo', hex: '#1E3A8A', role: 'Estado hover/pressionado, anel de foco visível (WCAG) e texto sobre Azul Suave.', contrast: '10,36:1 (#FFF)', wcag: 'AAA' },
+      { group: 'Principal — Marca e Fluxo do Morador (Lucas)', name: 'Azul Suave', hex: '#DBEAFE', role: 'Fundo de pílulas de categoria selecionadas, tags de filtro ativo e badges informativos.', contrast: '8,27:1 (#1E3A8A)', wcag: 'AAA' },
+
+      // Destaque (Profissional)
+      { group: 'Destaque — Fluxo do Profissional (Roberto)', name: 'Laranja Obra', hex: '#C2410C', role: 'Ações principais do prestador, alertas de demanda e navegação ativa do profissional.', contrast: '5,18:1 (#FFF)', wcag: 'AA' },
+      { group: 'Destaque — Fluxo do Profissional (Roberto)', name: 'Laranja Intenso (Hover)', hex: '#9A3412', role: 'Estado pressionado/hover em botões do fluxo do profissional.', contrast: '7,42:1 (#FFF)', wcag: 'AAA' },
+      { group: 'Destaque — Fluxo do Profissional (Roberto)', name: 'Laranja Suave', hex: '#FFEDD5', role: 'Fundo suave para banners de demandas próximas e destaque de perfil profissional.', contrast: '4,58:1 (#C2410C)', wcag: 'AA' },
+
+      // Neutros
+      { group: 'Tons Neutros — Base, Superfícies e Textos', name: 'Cinza Gelo', hex: '#F8FAFC', role: 'Fundo geral das telas mobile, reduzindo o cansaço visual do branco absoluto.', contrast: '17,18:1 (#0F172A)', wcag: 'AAA' },
+      { group: 'Tons Neutros — Base, Superfícies e Textos', name: 'Branco Puro', hex: '#FFFFFF', role: 'Superfície de cartões, campos de formulário e barra de navegação inferior.', contrast: '17,85:1 (#0F172A)', wcag: 'AAA' },
+      { group: 'Tons Neutros — Base, Superfícies e Textos', name: 'Cinza Borda', hex: '#CBD5E1', role: 'Contorno sutil de cartões, divisórias e pílulas inativas.', contrast: 'Elemento gráfico', wcag: 'UI' },
+      { group: 'Tons Neutros — Base, Superfícies e Textos', name: 'Cinza Controle', hex: '#64748B', role: 'Bordas de campos de texto (inputs) e ícones inativos na Bottom Navigation.', contrast: '4,76:1 (#FFF)', wcag: 'AA' },
+      { group: 'Tons Neutros — Base, Superfícies e Textos', name: 'Cinza Ardósia', hex: '#475569', role: 'Textos secundários, subtítulos, bairros, distâncias e descrições auxiliares.', contrast: '7,57:1 (#FFF)', wcag: 'AAA' },
+      { group: 'Tons Neutros — Base, Superfícies e Textos', name: 'Azul Chumbo', hex: '#0F172A', role: 'Títulos principais, nomes de profissionais e corpo de texto de leitura.', contrast: '17,85:1 (#FFF)', wcag: 'AAA' },
+
+      // Feedback
+      { group: 'Cores de Feedback — Status, Reputação e Erros', name: 'Verde Seguro', hex: '#15803D', role: 'Confirmação de orçamento (T05-C), selo Verificado e status Pago (T12).', contrast: '5,01:1 (#FFF)', wcag: 'AA' },
+      { group: 'Cores de Feedback — Status, Reputação e Erros', name: 'Verde Suave (Fundo)', hex: '#F0FDF4', role: 'Fundo de banners de confirmação, badge Verificado e bloco Saldo Disponível.', contrast: '4,82:1 (#15803D)', wcag: 'AA' },
+      { group: 'Cores de Feedback — Status, Reputação e Erros', name: 'Âmbar Atenção', hex: '#B45309', role: 'Estrelas de avaliação (T03/T04) e status financeiro Retido (Seguro) (T12).', contrast: '5,02:1 (#FFF)', wcag: 'AA' },
+      { group: 'Cores de Feedback — Status, Reputação e Erros', name: 'Âmbar Suave (Fundo)', hex: '#FFFBEB', role: 'Fundo de blocos de reputação e card de valor Retido (Seguro).', contrast: '4,83:1 (#B45309)', wcag: 'AA' },
+      { group: 'Cores de Feedback — Status, Reputação e Erros', name: 'Vermelho Erro', hex: '#B91C1C', role: 'Bordas e mensagens descritivas de erro (T05-B) e falha de conexão (T08-B).', contrast: '6,47:1 (#FFF)', wcag: 'AA' },
+      { group: 'Cores de Feedback — Status, Reputação e Erros', name: 'Vermelho Suave (Fundo)', hex: '#FEF2F2', role: 'Fundo de alertas de validação e caixas de erro de carregamento.', contrast: '6,02:1 (#B91C1C)', wcag: 'AA' },
+    ];
+
+    const TYPOGRAPHY_SCALE = [
+      { id: 'H1', label: 'Título Principal (H1)', family: 'Poppins', weight: 'Bold (700)', size: '24px / 32px', cls: 'ds-h1', sample: 'Resolva imprevistos em Pelotas', usage: 'Chamada principal na T01 e cabeçalhos de grande destaque.' },
+      { id: 'H2', label: 'Título de Tela / Seção (H2)', family: 'Poppins', weight: 'SemiBold (600)', size: '18px / 26px', cls: 'ds-h2', sample: 'Resultados: Eletricista', usage: 'Topo das telas internas, saudação e títulos de seção (Portfólio, Avaliações).' },
+      { id: 'H3', label: 'Subtítulo / Nome em Card (H3)', family: 'Inter', weight: 'SemiBold (600)', size: '16px / 24px', cls: 'ds-h3', sample: 'Roberto · R$ 420,00', usage: 'Nomes de profissionais em cartões (T03) e valores financeiros (T12).' },
+      { id: 'Body', label: 'Corpo de Texto (Body)', family: 'Inter', weight: 'Regular (400)', size: '16px / 24px', cls: 'ds-body', sample: 'Encontre profissionais verificados perto de você com pagamento seguro.', usage: 'Mensagens no chat, descrições de orçamento e leitura principal.' },
+      { id: 'Sec', label: 'Texto Secundário', family: 'Inter', weight: 'Regular (400)', size: '14px / 20px', cls: 'ds-secondary', sample: 'Eletricista • Centro, Pelotas • 4.9 (12 avaliações)', usage: 'Especialidades, bairros, comentários e orientações auxiliares.' },
+      { id: 'Label', label: 'Rótulos e Botões (CTA)', family: 'Inter', weight: 'SemiBold (600)', size: '14px (rótulo) / 16px (botão)', cls: 'ds-label', sample: 'Descreva o problema: · Solicitar Orçamento', usage: 'Rótulos fixos acima dos campos (T05), pílulas e textos de botões.' },
+      { id: 'Caption', label: 'Legenda / Microtexto', family: 'Inter', weight: 'Medium (500)', size: '12px / 16px', cls: 'ds-caption', sample: 'Busca · Chats · Perfil · Pago · 19:42', usage: 'Barra de navegação inferior, horários no chat e badges de status.' },
+    ];
+
+    // Metadados de navegação e inspeção por tela
+    const SCREENS = [
+      { id: 'T01', code: 'T01', name: 'Página Inicial', group: 'Acesso', accent: 'brand', colors: ['#F8FAFC', '#FFFFFF', '#1D4ED8', '#C2410C', '#0F172A', '#475569'], typo: ['H1', 'Body', 'Label', 'Sec'] },
+      { id: 'T02', code: 'T02', name: 'Buscar Serviços', group: 'Fluxo do Morador (Lucas)', accent: 'brand', colors: ['#F8FAFC', '#FFFFFF', '#1D4ED8', '#1E3A8A', '#DBEAFE', '#64748B', '#CBD5E1', '#15803D', '#B45309'], typo: ['H2', 'H3', 'Body', 'Sec', 'Label', 'Caption'] },
+      { id: 'T03', code: 'T03', name: 'Resultados da Busca', group: 'Fluxo do Morador (Lucas)', accent: 'brand', colors: ['#F8FAFC', '#FFFFFF', '#1D4ED8', '#1E3A8A', '#DBEAFE', '#CBD5E1', '#15803D', '#F0FDF4', '#B45309'], typo: ['H2', 'H3', 'Sec', 'Label', 'Caption'] },
+      { id: 'T04', code: 'T04', name: 'Perfil do Profissional', group: 'Fluxo do Morador (Lucas)', accent: 'brand', colors: ['#F8FAFC', '#FFFFFF', '#1D4ED8', '#15803D', '#F0FDF4', '#B45309', '#FFFBEB', '#0F172A', '#475569'], typo: ['H2', 'H3', 'Sec', 'Label', 'Caption'] },
+      { id: 'T05', code: 'T05', name: 'Solicitar Orçamento', group: 'Fluxo do Morador (Lucas)', accent: 'brand', colors: ['#F8FAFC', '#FFFFFF', '#1D4ED8', '#1E3A8A', '#64748B', '#B91C1C', '#FEF2F2', '#15803D', '#F0FDF4'], typo: ['H2', 'Body', 'Label', 'Sec', 'Caption'] },
+      { id: 'T06', code: 'T06', name: 'Chat do Morador', group: 'Fluxo do Morador (Lucas)', accent: 'brand', colors: ['#F8FAFC', '#FFFFFF', '#1D4ED8', '#DBEAFE', '#1E3A8A', '#15803D', '#CBD5E1', '#0F172A'], typo: ['H3', 'Body', 'Sec', 'Label', 'Caption'] },
+      { id: 'T08', code: 'T08', name: 'Painel de Demandas', group: 'Fluxo do Profissional (Roberto)', accent: 'pro', colors: ['#F8FAFC', '#FFFFFF', '#C2410C', '#9A3412', '#FFEDD5', '#CBD5E1', '#B91C1C', '#FEF2F2', '#0F172A'], typo: ['H2', 'H3', 'Sec', 'Label', 'Caption'] },
+      { id: 'T12', code: 'T12', name: 'Carteira / Pagamentos', group: 'Fluxo do Profissional (Roberto)', accent: 'pro', colors: ['#F8FAFC', '#FFFFFF', '#C2410C', '#15803D', '#F0FDF4', '#B45309', '#FFFBEB', '#CBD5E1', '#0F172A'], typo: ['H2', 'H3', 'Sec', 'Caption'] },
+    ];
+
+    // =========================================================================
+    // 2. ESTADO INTERATIVO DO PROTÓTIPO
+    // =========================================================================
+    const state = {
+      mainTab: 'prototype',
+      activeScreen: 'T01',
+      screenStates: {
+        T03: 'normal', // 'normal' | 'empty' (T03-B)
+        T05: 'normal', // 'normal' | 'error' (T05-B) | 'success' (T05-C)
+        T08: 'normal', // 'normal' | 'error' (T08-B)
+      },
+      showTabOrder: true,
+      selectedCategory: 'Elétrica',
+      searchQuery: '',
+      quoteText: '',
+      quoteHasPhoto: false,
+      chatPaymentClosed: false,
+      chatMessages: [
+        { from: 'roberto', text: 'Olá, Lucas! Vi a foto do disjuntor do apartamento. Parece ser sobrecarga na chave do chuveiro.', time: '19:42' },
+        { from: 'lucas', text: 'Oi Roberto! Sim, toda vez que ligo no quente ele desarma. Você consegue vir amanhã às 14h?', time: '19:44' },
+        { from: 'roberto', text: 'Consigo sim! O serviço completo fica R$ 120,00 com teste de carga incluso. Posso confirmar?', time: '19:46' },
+      ],
+    };
+
+    // =========================================================================
+    // 3. ÍCONES SVG LIMPOS (ESTILO LUCIDE OUTLINE 24px, STROKE 2px)
+    // =========================================================================
+    const ICONS = {
+      back: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>`,
+      pin: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`,
+      search: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`,
+      chat: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>`,
+      user: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
+      briefcase: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>`,
+      wallet: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12V8H6a2 2 0 0 1-2-2c0-1.1.9-2 2-2h12v4"/><path d="M4 6v12c0 1.1.9 2 2 2h14v-4"/><path d="M18 12a2 2 0 0 0-2 2c0 1.1.9 2 2 2h4v-4h-4z"/></svg>`,
+      star: `<svg width="15" height="15" viewBox="0 0 24 24" fill="#B45309" stroke="#B45309" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`,
+      checkCircle: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>`,
+      shieldCheck: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M9 12l2 2 4-4"/></svg>`,
+      camera: `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>`,
+      alert: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
+      send: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>`,
+      lock: `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>`,
+      wifiOff: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="1" y1="1" x2="23" y2="23"/><path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"/><path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"/><path d="M10.71 5.05A16 16 0 0 1 22.58 9"/><path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>`,
+      zap: `<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>`,
+      wrenchHome: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9.5"/><path d="M14.5 13.5l-5 5"/><path d="M10 13.5h4.5V18"/></svg>`,
+      bell: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>`,
+      copy: `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>`,
+    };
+
+    // =========================================================================
+    // 4. UTILITÁRIOS (TOAST E CÓPIA PARA CLIPBOARD VIA execCommand)
+    // =========================================================================
+    let toastTimer = null;
+    function showToast(msg) {
+      const el = document.getElementById('toast');
+      const txt = document.getElementById('toast-message');
+      if (!el || !txt) return;
+      txt.textContent = msg;
+      el.classList.remove('translate-y-20', 'opacity-0');
+      el.classList.add('translate-y-0', 'opacity-100');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        el.classList.add('translate-y-20', 'opacity-0');
+        el.classList.remove('translate-y-0', 'opacity-100');
+      }, 2200);
+    }
+
+    function copyHex(hex) {
+      try {
+        const temp = document.createElement('textarea');
+        temp.value = hex;
+        temp.setAttribute('readonly', '');
+        temp.style.position = 'fixed';
+        temp.style.left = '-9999px';
+        document.body.appendChild(temp);
+        temp.select();
+        document.execCommand('copy');
+        document.body.removeChild(temp);
+        showToast(`HEX ${hex} copiado!`);
+      } catch (e) {
+        showToast(`Código: ${hex}`);
+      }
+    }
+
+    // =========================================================================
+    // 5. COMPONENTES COMUNS DAS TELAS MOBILE
+    // =========================================================================
+    function renderResidentBottomNav(activeKey, interactive = true) {
+      const items = [
+        { key: 'busca', label: 'Busca', icon: ICONS.search, target: 'T02' },
+        { key: 'chats', label: 'Chats', icon: ICONS.chat, target: 'T06' },
+        { key: 'perfil', label: 'Perfil', icon: ICONS.user, target: 'T01' },
+      ];
+      return `
+        <nav class="h-16 bg-[#FFFFFF] border-t border-[#CBD5E1] px-4 flex items-center justify-around shrink-0" aria-label="Navegação do morador">
+          ${items.map(item => {
+            const isActive = item.key === activeKey;
+            const color = isActive ? 'text-[#1D4ED8]' : 'text-[#64748B]';
+            const pill = isActive ? 'bg-[#DBEAFE]' : 'bg-transparent';
+            return `
+              <button
+                ${interactive ? `onclick="navigateTo('${item.target}')"` : ''}
+                class="flex flex-col items-center justify-center gap-0.5 min-w-[72px] py-1 rounded-xl ${color} transition-colors cursor-pointer"
+              >
+                <span class="px-3 py-0.5 rounded-full ${pill}">${item.icon}</span>
+                <span class="ds-caption ${isActive ? 'font-semibold' : ''}">${item.label}</span>
+              </button>
+            `;
+          }).join('')}
+        </nav>
+      `;
+    }
+
+    function renderProBottomNav(activeKey, interactive = true) {
+      const items = [
+        { key: 'demandas', label: 'Demandas', icon: ICONS.briefcase, target: 'T08' },
+        { key: 'chats', label: 'Chats', icon: ICONS.chat, target: 'T06' },
+        { key: 'carteira', label: 'Carteira', icon: ICONS.wallet, target: 'T12' },
+      ];
+      return `
+        <nav class="h-16 bg-[#FFFFFF] border-t border-[#CBD5E1] px-4 flex items-center justify-around shrink-0" aria-label="Navegação do profissional">
+          ${items.map(item => {
+            const isActive = item.key === activeKey;
+            const color = isActive ? 'text-[#C2410C]' : 'text-[#64748B]';
+            const pill = isActive ? 'bg-[#FFEDD5]' : 'bg-transparent';
+            return `
+              <button
+                ${interactive ? `onclick="navigateTo('${item.target}')"` : ''}
+                class="flex flex-col items-center justify-center gap-0.5 min-w-[72px] py-1 rounded-xl ${color} transition-colors cursor-pointer"
+              >
+                <span class="px-3 py-0.5 rounded-full ${pill}">${item.icon}</span>
+                <span class="ds-caption ${isActive ? 'font-semibold' : ''}">${item.label}</span>
+              </button>
+            `;
+          }).join('')}
+        </nav>
+      `;
+    }
+
+    // Avatar estilizado SVG / iniciais com contraste garantido
+    function renderAvatar(initials, bgHex, textHex, sizeClass = 'w-12 h-12 text-base') {
+      return `
+        <div class="${sizeClass} rounded-full flex items-center justify-center font-poppins font-bold shrink-0 border border-[#CBD5E1]" style="background:${bgHex}; color:${textHex};">
+          ${initials}
+        </div>
+      `;
+    }
+
+    // =========================================================================
+    // 6. RENDERIZADORES DAS 8 TELAS MOBILE (390px FIEL AO DESIGN SYSTEM)
+    // =========================================================================
+    function renderScreenHTML(screenId, opts = {}) {
+      const interactive = opts.interactive !== false;
+      const forceNormal = opts.forceNormal === true;
+
+      const sT03 = forceNormal ? 'normal' : state.screenStates.T03;
+      const sT05 = forceNormal ? 'normal' : state.screenStates.T05;
+      const sT08 = forceNormal ? 'normal' : state.screenStates.T08;
+
+      // -----------------------------------------------------------------------
+      // T01 — PÁGINA INICIAL
+      // -----------------------------------------------------------------------
+      if (screenId === 'T01') {
+        return `
+          <div class="flex-1 flex flex-col justify-between p-6 bg-[#F8FAFC] phone-scroll overflow-y-auto">
+            <!-- Topo Logo -->
+            <div class="pt-4 flex flex-col items-center text-center">
+              <div class="w-16 h-16 rounded-2xl bg-[#1D4ED8] text-white flex items-center justify-center shadow-md mb-3">
+                ${ICONS.wrenchHome}
+              </div>
+              <div class="font-poppins font-bold text-xl text-[#0F172A] tracking-tight">Fácil Serviço</div>
+              <span class="mt-1 inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#DBEAFE] text-[#1E3A8A] ds-caption font-semibold">
+                ${ICONS.pin} Pelotas Conecta
+              </span>
+            </div>
+
+            <!-- Centro: Proposta e Botões de Perfil -->
+            <div class="my-6 space-y-5">
+              <div class="text-center space-y-2">
+                <h1 class="ds-h1 text-[#0F172A]">Resolva imprevistos em Pelotas</h1>
+                <p class="ds-body text-[#475569]">
+                  Encontre profissionais verificados perto de você ou receba novos pedidos com pagamento seguro.
+                </p>
+              </div>
+
+              <!-- Card de confiança sutil -->
+              <div class="bg-[#FFFFFF] border border-[#CBD5E1] rounded-xl p-3.5 flex items-center justify-between text-left">
+                <div class="flex items-center gap-2.5">
+                  <span class="w-9 h-9 rounded-lg bg-[#F0FDF4] text-[#15803D] flex items-center justify-center shrink-0">
+                    ${ICONS.shieldCheck}
+                  </span>
+                  <div>
+                    <div class="ds-label text-[#0F172A]">Avaliações reais e locais</div>
+                    <div class="ds-caption text-[#475569]">Pagamento retido até a conclusão</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Ações Principais (Touch Targets >= 48px) -->
+              <div class="space-y-3 pt-1">
+                <button
+                  ${interactive ? `onclick="navigateTo('T02')"` : ''}
+                  class="w-full min-h-[52px] px-4 rounded-xl bg-[#1D4ED8] hover:bg-[#1E3A8A] text-white ds-btn-text shadow-sm transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  ${ICONS.search}
+                  <span>Sou Morador</span>
+                </button>
+
+                <button
+                  ${interactive ? `onclick="navigateTo('T08')"` : ''}
+                  class="w-full min-h-[52px] px-4 rounded-xl bg-[#C2410C] hover:bg-[#9A3412] text-white ds-btn-text shadow-sm transition-colors flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  ${ICONS.briefcase}
+                  <span>Sou Profissional</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Rodapé -->
+            <div class="pb-2 text-center">
+              <button
+                ${interactive ? `onclick="showToast('Login rápido: entrando como Lucas (Morador)...'); navigateTo('T02')"` : ''}
+                class="ds-label text-[#1D4ED8] hover:text-[#1E3A8A] underline underline-offset-4 py-2 px-3 cursor-pointer"
+              >
+                Já tenho conta: Entrar
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
+      // -----------------------------------------------------------------------
+      // T02 — BUSCAR SERVIÇOS (MORADOR)
+      // -----------------------------------------------------------------------
+      if (screenId === 'T02') {
+        const categories = ['Elétrica', 'Hidráulica', 'Pintura', 'Fretes'];
+        return `
+          <div class="flex-1 flex flex-col overflow-hidden bg-[#F8FAFC]">
+            <!-- Cabeçalho -->
+            <header class="bg-[#FFFFFF] px-5 pt-4 pb-4 border-b border-[#CBD5E1] shrink-0">
+              <div class="flex items-center justify-between">
+                <div>
+                  <div class="flex items-center gap-1 text-[#475569] ds-caption">
+                    ${ICONS.pin}
+                    <span>Pelotas, RS</span>
+                  </div>
+                  <h2 class="ds-h2 text-[#0F172A] mt-0.5">Olá, Lucas!</h2>
+                </div>
+                ${renderAvatar('LM', '#DBEAFE', '#1E3A8A', 'w-10 h-10 text-sm')}
+              </div>
+
+              <!-- Campo de Busca -->
+              <form
+                ${interactive ? `onsubmit="event.preventDefault(); handleSearchSubmit()"` : ''}
+                class="mt-3.5 relative"
+              >
+                <input
+                  id="t02-search-input"
+                  type="text"
+                  value="${state.searchQuery}"
+                  ${interactive ? `oninput="state.searchQuery = this.value"` : ''}
+                  placeholder="Qual serviço você precisa?"
+                  class="ds-input w-full h-12 pl-4 pr-12 rounded-xl bg-[#FFFFFF] border border-[#64748B] ds-body text-[#0F172A] placeholder-[#64748B]"
+                />
+                <button
+                  type="submit"
+                  aria-label="Buscar serviços"
+                  class="absolute right-1.5 top-1.5 w-9 h-9 rounded-lg bg-[#1D4ED8] hover:bg-[#1E3A8A] text-white flex items-center justify-center transition-colors cursor-pointer"
+                >
+                  ${ICONS.search}
+                </button>
+              </form>
+            </header>
+
+            <!-- Conteúdo Rolável -->
+            <div class="flex-1 overflow-y-auto phone-scroll p-5 space-y-5">
+              <!-- Categorias Horizontais -->
+              <div>
+                <div class="flex items-center justify-between mb-2.5">
+                  <h3 class="ds-h3 text-[#0F172A]">Categorias</h3>
+                  <button
+                    ${interactive ? `onclick="navigateTo('T03')"` : ''}
+                    class="ds-caption font-semibold text-[#1D4ED8] cursor-pointer"
+                  >
+                    Ver todos
+                  </button>
+                </div>
+                <div class="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+                  ${categories.map(cat => {
+                    const active = state.selectedCategory === cat;
+                    return `
+                      <button
+                        ${interactive ? `onclick="selectCategory('${cat}')"` : ''}
+                        class="px-4 py-2 rounded-full text-sm shrink-0 transition-colors cursor-pointer ${
+                          active
+                            ? 'bg-[#DBEAFE] text-[#1E3A8A] border border-[#1D4ED8] font-semibold'
+                            : 'bg-[#FFFFFF] text-[#475569] border border-[#CBD5E1] font-medium hover:border-[#64748B]'
+                        }"
+                      >
+                        ${cat}
+                      </button>
+                    `;
+                  }).join('')}
+                </div>
+              </div>
+
+              <!-- Banner Rápido -->
+              <div class="bg-[#DBEAFE] border border-[#1D4ED8]/30 rounded-xl p-4 flex items-center justify-between gap-3">
+                <div>
+                  <div class="ds-label text-[#1E3A8A]">Emergência em casa?</div>
+                  <p class="ds-caption text-[#1E3A8A]/90 mt-0.5">
+                    Busque eletricistas e encanadores disponíveis hoje em Pelotas.
+                  </p>
+                </div>
+                <button
+                  ${interactive ? `onclick="navigateTo('T03')"` : ''}
+                  class="px-3 py-2 rounded-lg bg-[#1D4ED8] text-white ds-caption font-semibold shrink-0 cursor-pointer"
+                >
+                  Buscar
+                </button>
+              </div>
+
+              <!-- Destaques em Pelotas -->
+              <div>
+                <h3 class="ds-h3 text-[#0F172A] mb-2.5">Destaques em Pelotas</h3>
+
+                <!-- Mini Card Verificado do Roberto -->
+                <div
+                  ${interactive ? `onclick="navigateTo('T04')"` : ''}
+                  class="bg-[#FFFFFF] border border-[#CBD5E1] rounded-xl p-4 shadow-sm hover:border-[#1D4ED8] transition-colors cursor-pointer space-y-3"
+                >
+                  <div class="flex items-start gap-3">
+                    ${renderAvatar('RB', '#FFEDD5', '#C2410C', 'w-12 h-12 text-base')}
+                    <div class="flex-1 min-w-0">
+                      <div class="flex items-center justify-between gap-2">
+                        <h4 class="ds-h3 text-[#0F172A] truncate">Roberto</h4>
+                        <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#F0FDF4] text-[#15803D] ds-caption font-semibold shrink-0">
+                          ${ICONS.shieldCheck} Verificado
+                        </span>
+                      </div>
+                      <p class="ds-secondary text-[#475569]">Eletricista • Centro, Pelotas</p>
+                      <div class="flex items-center gap-1 mt-1 text-[#B45309] ds-caption font-semibold">
+                        ${ICONS.star}
+                        <span>4.9</span>
+                        <span class="text-[#475569] font-normal">(12 avaliações)</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="pt-2 border-t border-[#F1F5F9] flex items-center justify-between">
+                    <span class="ds-caption text-[#475569]">Responde em ~15 min</span>
+                    <span class="ds-label text-[#1D4ED8]">Ver Perfil →</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            ${renderResidentBottomNav('busca', interactive)}
+          </div>
+        `;
+      }
+
+      // -----------------------------------------------------------------------
+      // T03 — RESULTADOS DA BUSCA (+ T03-B SEM RESULTADOS)
+      // -----------------------------------------------------------------------
+      if (screenId === 'T03') {
+        const pros = [
+          { name: 'Roberto', initials: 'RB', bg: '#FFEDD5', fg: '#C2410C', verified: true, spec: 'Eletricista • Centro, Pelotas', rating: '4.9', reviews: '12 avaliações' },
+          { name: 'Carla Mendes', initials: 'CM', bg: '#DBEAFE', fg: '#1E3A8A', verified: true, spec: 'Eletricista Residencial • Laranjal', rating: '4.8', reviews: '9 avaliações' },
+          { name: 'Marcos Silva', initials: 'MS', bg: '#F1F5F9', fg: '#0F172A', verified: false, spec: 'Eletricista e Reparos • Três Vendas', rating: '4.7', reviews: '15 avaliações' },
+        ];
+
+        return `
+          <div class="flex-1 flex flex-col overflow-hidden bg-[#F8FAFC]">
+            <!-- Barra de Topo -->
+            <header class="bg-[#FFFFFF] px-4 py-3.5 border-b border-[#CBD5E1] shrink-0">
+              <div class="flex items-center gap-2">
+                <button
+                  ${interactive ? `onclick="navigateTo('T02')"` : ''}
+                  class="p-1.5 -ml-1.5 rounded-lg text-[#0F172A] hover:bg-[#F8FAFC] flex items-center gap-1 ds-label cursor-pointer"
+                  aria-label="Voltar para busca"
+                >
+                  ${ICONS.back}
+                </button>
+                <h2 class="ds-h2 text-[#0F172A] truncate">Resultados: Eletricista</h2>
+              </div>
+
+              <!-- Tag de Filtro Ativo -->
+              <div class="mt-2.5 flex items-center justify-between gap-2">
+                <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#DBEAFE] text-[#1E3A8A] ds-caption font-semibold">
+                  <span>Categoria: ${state.selectedCategory}</span>
+                  <span class="opacity-40">|</span>
+                  <button
+                    ${interactive ? `onclick="setScreenState('T03', '${sT03 === 'normal' ? 'empty' : 'normal'}')"` : ''}
+                    class="underline cursor-pointer"
+                  >
+                    Limpar
+                  </button>
+                </span>
+                <span class="ds-caption text-[#475569]">${sT03 === 'empty' ? '0 encontrados' : '3 encontrados'}</span>
+              </div>
+            </header>
+
+            <!-- Conteúdo -->
+            <div class="flex-1 overflow-y-auto phone-scroll p-4 space-y-3">
+              ${sT03 === 'empty' ? `
+                <!-- ESTADO T03-B: SEM RESULTADOS -->
+                <div class="bg-[#FFFFFF] border border-[#CBD5E1] rounded-xl p-6 mt-6 text-center space-y-4">
+                  <div class="w-14 h-14 mx-auto rounded-full bg-[#F8FAFC] border border-[#CBD5E1] text-[#64748B] flex items-center justify-center">
+                    ${ICONS.search}
+                  </div>
+                  <div class="space-y-1.5">
+                    <h3 class="ds-h3 text-[#0F172A]">Nenhum profissional encontrado</h3>
+                    <p class="ds-secondary text-[#475569]">
+                      Nenhum profissional encontrado para essa busca em Pelotas. Tente outra categoria ou limpe os filtros.
+                    </p>
+                  </div>
+                  <button
+                    ${interactive ? `onclick="setScreenState('T03', 'normal')"` : ''}
+                    class="w-full h-12 rounded-xl bg-[#1D4ED8] hover:bg-[#1E3A8A] text-white ds-btn-text transition-colors cursor-pointer"
+                  >
+                    Limpar filtros
+                  </button>
+                </div>
+              ` : `
+                <!-- LISTA DE CARTÕES DE PROFISSIONAIS -->
+                ${pros.map((p, idx) => `
+                  <article class="bg-[#FFFFFF] border border-[#CBD5E1] rounded-xl p-4 shadow-sm space-y-3">
+                    <div class="flex items-start gap-3">
+                      ${renderAvatar(p.initials, p.bg, p.fg, 'w-12 h-12 text-sm')}
+                      <div class="flex-1 min-w-0">
+                        <div class="flex items-center justify-between gap-2">
+                          <h3 class="ds-h3 text-[#0F172A] truncate">${p.name}</h3>
+                          ${p.verified ? `
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#F0FDF4] text-[#15803D] ds-caption font-semibold shrink-0">
+                              ${ICONS.shieldCheck} Verificado
+                            </span>
+                          ` : ''}
+                        </div>
+                        <p class="ds-secondary text-[#475569] mt-0.5">${p.spec}</p>
+                        <div class="flex items-center gap-1 mt-1.5 text-[#B45309] ds-caption font-semibold">
+                          ${ICONS.star}
+                          <span>${p.rating}</span>
+                          <span class="text-[#475569] font-normal">(${p.reviews})</span>
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      ${interactive ? `onclick="navigateTo('T04')"` : ''}
+                      class="w-full h-11 rounded-xl bg-[#FFFFFF] border-2 border-[#1D4ED8] text-[#1D4ED8] hover:bg-[#DBEAFE] ds-label transition-colors cursor-pointer"
+                    >
+                      Ver Perfil
+                    </button>
+                  </article>
+                `).join('')}
+              `}
+            </div>
+
+            ${renderResidentBottomNav('busca', interactive)}
+          </div>
+        `;
+      }
+
+      // -----------------------------------------------------------------------
+      // T04 — PERFIL DO PROFISSIONAL
+      // -----------------------------------------------------------------------
+      if (screenId === 'T04') {
+        const portfolio = [
+          { title: 'Quadro de Disjuntores', bg: '#DBEAFE', stroke: '#1E3A8A', icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h3v4H8zM13 8h3v4h-3zM8 15h8"/></svg>` },
+          { title: 'Instalação de Chuveiro', bg: '#FFEDD5', stroke: '#C2410C', icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 4h6a4 4 0 0 1 4 4v2H4V4z"/><path d="M6 14v2M9 14v3M12 14v2"/></svg>` },
+          { title: 'Iluminação LED', bg: '#FFFBEB', stroke: '#B45309', icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2z"/></svg>` },
+          { title: 'Revisão Elétrica', bg: '#F0FDF4', stroke: '#15803D', icon: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>` },
+        ];
+
+        return `
+          <div class="flex-1 flex flex-col overflow-hidden bg-[#F8FAFC]">
+            <!-- Topo -->
+            <header class="bg-[#FFFFFF] px-4 py-3.5 border-b border-[#CBD5E1] flex items-center gap-2 shrink-0">
+              <button
+                ${interactive ? `onclick="navigateTo('T03')"` : ''}
+                class="p-1.5 -ml-1.5 rounded-lg text-[#0F172A] hover:bg-[#F8FAFC] cursor-pointer"
+                aria-label="Voltar aos resultados"
+              >
+                ${ICONS.back}
+              </button>
+              <h2 class="ds-h2 text-[#0F172A]">Perfil</h2>
+            </header>
+
+            <!-- Conteúdo -->
+            <div class="flex-1 overflow-y-auto phone-scroll p-4 space-y-4">
+              <!-- Card Superior de Confiança -->
+              <section class="bg-[#FFFFFF] border border-[#CBD5E1] rounded-xl p-4 text-center space-y-3 shadow-sm">
+                <div class="flex flex-col items-center">
+                  ${renderAvatar('RB', '#FFEDD5', '#C2410C', 'w-20 h-20 text-2xl')}
+                  <h2 class="ds-h2 text-[#0F172A] mt-2.5">Roberto</h2>
+                  <span class="mt-1 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#F0FDF4] text-[#15803D] ds-caption font-semibold border border-[#15803D]/25">
+                    ✓ Eletricista Verificado
+                  </span>
+                </div>
+
+                <!-- Bloco de Reputação em Âmbar Suave -->
+                <div class="bg-[#FFFBEB] border border-[#B45309]/30 rounded-xl py-2.5 px-3 flex items-center justify-center gap-1.5 text-[#B45309] ds-label">
+                  ${ICONS.star}
+                  <span>4.9 (12 avaliações reais)</span>
+                </div>
+
+                <p class="ds-secondary text-[#475569]">
+                  15 anos de experiência em reparos residenciais, quadros de luz e instalações seguras em Pelotas.
+                </p>
+              </section>
+
+              <!-- Portfólio 2x2 -->
+              <section class="space-y-2.5">
+                <h2 class="ds-h2 text-[#0F172A]">Portfólio</h2>
+                <div class="grid grid-cols-2 gap-2.5">
+                  ${portfolio.map(item => `
+                    <div class="bg-[#FFFFFF] border border-[#CBD5E1] rounded-xl p-3 flex flex-col items-center text-center gap-2">
+                      <div class="w-full h-20 rounded-lg flex items-center justify-center" style="background:${item.bg}; color:${item.stroke};">
+                        ${item.icon}
+                      </div>
+                      <span class="ds-caption font-semibold text-[#0F172A]">${item.title}</span>
+                    </div>
+                  `).join('')}
+                </div>
+              </section>
+
+              <!-- Avaliações -->
+              <section class="space-y-2.5 pb-2">
+                <h2 class="ds-h2 text-[#0F172A]">Avaliações</h2>
+                <div class="bg-[#FFFFFF] border border-[#CBD5E1] rounded-xl p-3.5 space-y-1.5">
+                  <div class="flex items-center justify-between">
+                    <span class="ds-label text-[#0F172A]">Mariana C. · Centro</span>
+                    <span class="ds-caption font-semibold text-[#B45309]">★ 5.0</span>
+                  </div>
+                  <p class="ds-secondary text-[#475569]">
+                    “Chegou no horário combinado e trocou o disjuntor rapidamente. Super educado e preço justo.”
+                  </p>
+                </div>
+                <div class="bg-[#FFFFFF] border border-[#CBD5E1] rounded-xl p-3.5 space-y-1.5">
+                  <div class="flex items-center justify-between">
+                    <span class="ds-label text-[#0F172A]">Pedro H. · Areal</span>
+                    <span class="ds-caption font-semibold text-[#B45309]">★ 4.9</span>
+                  </div>
+                  <p class="ds-secondary text-[#475569]">
+                    “Resolveu a queda de energia do chuveiro no mesmo dia. Recomendo demais.”
+                  </p>
+                </div>
+              </section>
+            </div>
+
+            <!-- Rodapé Fixo com CTA Principal -->
+            <div class="bg-[#FFFFFF] border-t border-[#CBD5E1] p-4 shrink-0">
+              <button
+                ${interactive ? `onclick="navigateTo('T05')"` : ''}
+                class="w-full h-12 rounded-xl bg-[#1D4ED8] hover:bg-[#1E3A8A] text-white ds-btn-text shadow-sm transition-colors cursor-pointer"
+              >
+                Solicitar Orçamento
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
+      // -----------------------------------------------------------------------
+      // T05 — SOLICITAR ORÇAMENTO (+ T05-B ERRO/FOCO + T05-C SUCESSO)
+      // -----------------------------------------------------------------------
+      if (screenId === 'T05') {
+        const showTabs = sT05 === 'error' && state.showTabOrder && interactive;
+
+        return `
+          <div class="flex-1 flex flex-col overflow-hidden bg-[#F8FAFC]">
+            <!-- Topo -->
+            <header class="bg-[#FFFFFF] px-4 py-3.5 border-b border-[#CBD5E1] flex items-center gap-2 shrink-0">
+              <div class="relative">
+                <button
+                  ${interactive ? `onclick="navigateTo('T04')"` : ''}
+                  class="p-1.5 -ml-1.5 rounded-lg text-[#0F172A] hover:bg-[#F8FAFC] cursor-pointer"
+                  aria-label="Voltar ao perfil"
+                >
+                  ${ICONS.back}
+                </button>
+                ${showTabs ? `<span class="tab-badge" title="Ordem de foco Tab 1">1</span>` : ''}
+              </div>
+              <div>
+                <h2 class="ds-h2 text-[#0F172A]">Novo Orçamento</h2>
+                <p class="ds-caption text-[#475569]">Para: Roberto (Eletricista)</p>
+              </div>
+            </header>
+
+            <!-- Conteúdo -->
+            <div class="flex-1 overflow-y-auto phone-scroll p-4 space-y-4">
+              ${sT05 === 'success' ? `
+                <!-- ESTADO T05-C: PEDIDO ENVIADO COM SUCESSO -->
+                <div class="bg-[#F0FDF4] border-2 border-[#15803D] rounded-xl p-5 mt-4 space-y-4">
+                  <div class="flex items-start gap-3">
+                    <div class="w-10 h-10 rounded-full bg-[#15803D] text-white flex items-center justify-center shrink-0">
+                      ${ICONS.checkCircle}
+                    </div>
+                    <div class="space-y-1">
+                      <h3 class="ds-h3 text-[#15803D]">Pedido enviado!</h3>
+                      <p class="ds-secondary text-[#15803D]">
+                        Pedido enviado com sucesso para Roberto! Você receberá uma notificação assim que ele responder.
+                      </p>
+                    </div>
+                  </div>
+                  <div class="bg-[#FFFFFF] border border-[#15803D]/30 rounded-lg p-3 ds-caption text-[#475569]">
+                    <strong>Resumo:</strong> Orçamento elétrico enviado · Pagamento protegido pela plataforma.
+                  </div>
+                  <button
+                    ${interactive ? `onclick="navigateTo('T06')"` : ''}
+                    class="w-full h-12 rounded-xl bg-[#1D4ED8] hover:bg-[#1E3A8A] text-white ds-btn-text transition-colors cursor-pointer"
+                  >
+                    Ir para o Chat
+                  </button>
+                </div>
+              ` : `
+                <!-- FORMULÁRIO (NORMAL OU T05-B ERRO) -->
+                <div class="space-y-2 relative">
+                  <label for="t05-desc" class="block ds-label text-[#0F172A]">
+                    Descreva o problema: <span class="text-[#B91C1C]">*</span>
+                  </label>
+                  <textarea
+                    id="t05-desc"
+                    rows="5"
+                    ${interactive ? `oninput="state.quoteText = this.value"` : ''}
+                    placeholder="Ex: O disjuntor do chuveiro desarma toda vez que ligo no modo quente..."
+                    class="ds-input w-full p-3.5 rounded-xl bg-[#FFFFFF] ds-body text-[#0F172A] placeholder-[#64748B] resize-none ${
+                      sT05 === 'error'
+                        ? 'border-2 border-[#B91C1C] ring-2 ring-[#1E3A8A]'
+                        : 'border border-[#64748B]'
+                    }"
+                  >${sT05 === 'error' && state.quoteText.trim().length < 15 ? (state.quoteText || 'Fio solto') : state.quoteText}</textarea>
+                  ${showTabs ? `<span class="tab-badge" style="top:24px; right:8px;" title="Ordem de foco Tab 2 (Foco visível #1E3A8A)">2</span>` : ''}
+
+                  ${sT05 === 'error' ? `
+                    <div role="alert" class="bg-[#FEF2F2] border border-[#B91C1C] rounded-xl p-3 flex items-start gap-2.5 text-[#B91C1C]">
+                      <span class="shrink-0 mt-0.5">${ICONS.alert}</span>
+                      <p class="ds-secondary font-medium">
+                        Descreva o problema com pelo menos 15 caracteres para que o profissional possa passar um orçamento.
+                      </p>
+                    </div>
+                  ` : `
+                    <p class="ds-caption text-[#475569]">
+                      Mínimo de 15 caracteres para um orçamento mais preciso.
+                    </p>
+                  `}
+                </div>
+
+                <!-- Anexar Foto -->
+                <div class="space-y-2 relative">
+                  <label class="block ds-label text-[#0F172A]">Fotos ajudam no orçamento</label>
+                  <button
+                    type="button"
+                    ${interactive ? `onclick="toggleQuotePhoto()"` : ''}
+                    class="w-full min-h-[56px] px-4 rounded-xl border-2 border-dashed ${
+                      state.quoteHasPhoto
+                        ? 'border-[#15803D] bg-[#F0FDF4] text-[#15803D]'
+                        : 'border-[#64748B] bg-[#FFFFFF] text-[#1D4ED8] hover:bg-[#DBEAFE]/40'
+                    } ds-label flex items-center justify-center gap-2 transition-colors cursor-pointer"
+                  >
+                    ${state.quoteHasPhoto ? ICONS.checkCircle : ICONS.camera}
+                    <span>${state.quoteHasPhoto ? '1 foto anexada: disjuntor_apto.jpg (Remover)' : '+ Anexar Foto'}</span>
+                  </button>
+                  ${showTabs ? `<span class="tab-badge" style="top:24px; right:8px;" title="Ordem de foco Tab 3">3</span>` : ''}
+                </div>
+
+                ${showTabs ? `
+                  <div class="bg-[#DBEAFE] border border-[#1D4ED8]/30 rounded-xl p-3 text-[#1E3A8A] ds-caption">
+                    <strong>Acessibilidade (RNF-A02):</strong> Badges 1→2→3→4 demonstram a ordem lógica de navegação por teclado (Tab) com anel de foco visível em <span class="font-mono font-bold">#1E3A8A</span>.
+                  </div>
+                ` : ''}
+              `}
+            </div>
+
+            <!-- Botão Fixo na Base -->
+            ${sT05 !== 'success' ? `
+              <div class="bg-[#FFFFFF] border-t border-[#CBD5E1] p-4 shrink-0 relative">
+                <button
+                  ${interactive ? `onclick="submitQuoteForm()"` : ''}
+                  class="w-full h-12 rounded-xl bg-[#1D4ED8] hover:bg-[#1E3A8A] text-white ds-btn-text shadow-sm transition-colors cursor-pointer"
+                >
+                  Enviar Pedido
+                </button>
+                ${showTabs ? `<span class="tab-badge" style="top:10px; right:10px;" title="Ordem de foco Tab 4">4</span>` : ''}
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }
+
+      // -----------------------------------------------------------------------
+      // T06 — CHAT DO MORADOR
+      // -----------------------------------------------------------------------
+      if (screenId === 'T06') {
+        return `
+          <div class="flex-1 flex flex-col overflow-hidden bg-[#F8FAFC]">
+            <!-- Topo Chat -->
+            <header class="bg-[#FFFFFF] px-4 py-3 border-b border-[#CBD5E1] flex items-center gap-3 shrink-0">
+              <button
+                ${interactive ? `onclick="navigateTo('T02')"` : ''}
+                class="p-1.5 -ml-1.5 rounded-lg text-[#0F172A] hover:bg-[#F8FAFC] cursor-pointer"
+                aria-label="Voltar"
+              >
+                ${ICONS.back}
+              </button>
+              ${renderAvatar('RB', '#FFEDD5', '#C2410C', 'w-10 h-10 text-sm')}
+              <div class="min-w-0 flex-1">
+                <h2 class="ds-h3 text-[#0F172A] truncate">Roberto (Eletricista)</h2>
+                <div class="flex items-center gap-1.5 ds-caption text-[#15803D] font-semibold">
+                  <span class="w-2 h-2 rounded-full bg-[#15803D]"></span>
+                  <span>Online agora</span>
+                </div>
+              </div>
+            </header>
+
+            <!-- Área de Mensagens -->
+            <div id="t06-messages" class="flex-1 overflow-y-auto phone-scroll p-4 space-y-3">
+              <div class="text-center">
+                <span class="inline-block px-3 py-1 rounded-full bg-[#FFFFFF] border border-[#CBD5E1] ds-caption text-[#475569]">
+                  Chat protegido · Seu WhatsApp fica privado
+                </span>
+              </div>
+
+              ${state.chatMessages.map(m => {
+                const isLucas = m.from === 'lucas';
+                return `
+                  <div class="flex ${isLucas ? 'justify-end' : 'justify-start'}">
+                    <div class="max-w-[82%] rounded-2xl px-3.5 py-2.5 ${
+                      isLucas
+                        ? 'bg-[#1D4ED8] text-white rounded-br-sm'
+                        : 'bg-[#FFFFFF] border border-[#CBD5E1] text-[#0F172A] rounded-bl-sm'
+                    }">
+                      <p class="ds-secondary ${isLucas ? 'text-white' : 'text-[#0F172A]'}">${m.text}</p>
+                      <div class="text-right mt-1 ds-caption ${isLucas ? 'text-[#DBEAFE]' : 'text-[#475569]'}">${m.time}</div>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+
+              ${state.chatPaymentClosed ? `
+                <div class="bg-[#F0FDF4] border border-[#15803D] rounded-xl p-3 flex items-start gap-2.5 text-[#15803D]">
+                  <span class="shrink-0 mt-0.5">${ICONS.shieldCheck}</span>
+                  <div class="ds-caption">
+                    <strong>Serviço fechado (R$ 120,00)!</strong> O valor fica <strong>Retido (Seguro)</strong> na plataforma até você confirmar a conclusão.
+                  </div>
+                </div>
+              ` : ''}
+            </div>
+
+            <!-- Ação Dedicada Acima do Input -->
+            <div class="bg-[#FFFFFF] border-t border-[#CBD5E1] px-4 pt-3 pb-2 shrink-0 space-y-2.5">
+              <button
+                ${interactive ? `onclick="handleCloseDealInChat()"` : ''}
+                class="w-full h-11 rounded-xl ${
+                  state.chatPaymentClosed
+                    ? 'bg-[#F0FDF4] border border-[#15803D] text-[#15803D]'
+                    : 'bg-[#15803D] hover:bg-[#166534] text-white'
+                } ds-label flex items-center justify-center gap-2 transition-colors cursor-pointer"
+              >
+                ${ICONS.lock}
+                <span>${state.chatPaymentClosed ? '✓ Pagamento Retido com Segurança' : 'Fechar Serviço e Pagar'}</span>
+              </button>
+
+              <!-- Barra de Envio de Mensagem -->
+              <form
+                ${interactive ? `onsubmit="event.preventDefault(); sendChatMessage()"` : ''}
+                class="flex items-center gap-2 pb-1"
+              >
+                <input
+                  id="t06-chat-input"
+                  type="text"
+                  placeholder="Digite sua mensagem..."
+                  class="ds-input flex-1 h-11 px-3.5 rounded-xl bg-[#F8FAFC] border border-[#64748B] ds-secondary text-[#0F172A] placeholder-[#64748B]"
+                />
+                <button
+                  type="submit"
+                  aria-label="Enviar mensagem"
+                  class="h-11 px-3.5 rounded-xl bg-[#1D4ED8] hover:bg-[#1E3A8A] text-white ds-label flex items-center justify-center gap-1 transition-colors cursor-pointer"
+                >
+                  ${ICONS.send}
+                </button>
+              </form>
+            </div>
+          </div>
+        `;
+      }
+
+      // -----------------------------------------------------------------------
+      // T08 — PAINEL DO PROFISSIONAL (ROBERTO — LARANJA OBRA #C2410C)
+      // -----------------------------------------------------------------------
+      if (screenId === 'T08') {
+        const demands = [
+          { title: 'Troca de disjuntor', area: 'Centro', dist: '1,2 km', photos: '2 fotos anexadas', client: 'Lucas M.', urgent: true },
+          { title: 'Instalação de 2 tomadas 20A', area: 'Areal', dist: '2,8 km', photos: '1 foto anexada', client: 'Fernanda R.', urgent: false },
+          { title: 'Revisão de chuveiro elétrico', area: 'Fragata', dist: '3,5 km', photos: 'Sem foto', client: 'Carlos A.', urgent: false },
+        ];
+
+        return `
+          <div class="flex-1 flex flex-col overflow-hidden bg-[#F8FAFC]">
+            <!-- Cabeçalho Profissional -->
+            <header class="bg-[#FFFFFF] px-5 py-4 border-b border-[#CBD5E1] flex items-center justify-between shrink-0">
+              <div>
+                <div class="flex items-center gap-2">
+                  <span class="ds-caption font-semibold text-[#C2410C] uppercase tracking-wide">Painel do Profissional</span>
+                </div>
+                <h2 class="ds-h2 text-[#0F172A] mt-0.5">Olá, Roberto!</h2>
+              </div>
+              <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-[#FFEDD5] text-[#C2410C] ds-caption font-semibold">
+                ${ICONS.pin} Pelotas, RS
+              </span>
+            </header>
+
+            <!-- Conteúdo -->
+            <div class="flex-1 overflow-y-auto phone-scroll p-4 space-y-4">
+              <!-- Banner Resumo em Laranja Suave -->
+              <div class="bg-[#FFEDD5] border border-[#C2410C]/30 rounded-xl p-4 flex items-center justify-between gap-3">
+                <div class="flex items-start gap-2.5">
+                  <span class="w-9 h-9 rounded-lg bg-[#C2410C] text-white flex items-center justify-center shrink-0">
+                    ${ICONS.bell}
+                  </span>
+                  <div>
+                    <div class="ds-label text-[#C2410C]">3 novas demandas próximas</div>
+                    <p class="ds-caption text-[#9A3412] mt-0.5">Pedidos verificados na sua região de atuação.</p>
+                  </div>
+                </div>
+              </div>
+
+              ${sT08 === 'error' ? `
+                <!-- ESTADO T08-B: FALHA DE CARREGAMENTO -->
+                <div role="alert" class="bg-[#FEF2F2] border-2 border-[#B91C1C] rounded-xl p-5 text-center space-y-4 mt-4">
+                  <div class="w-12 h-12 mx-auto rounded-full bg-[#FFFFFF] text-[#B91C1C] flex items-center justify-center border border-[#B91C1C]/30">
+                    ${ICONS.wifiOff}
+                  </div>
+                  <div class="space-y-1">
+                    <h3 class="ds-h3 text-[#B91C1C]">Falha ao carregar serviços</h3>
+                    <p class="ds-secondary text-[#B91C1C]">
+                      Não foi possível carregar os serviços próximos. Verifique sua conexão e tente novamente.
+                    </p>
+                  </div>
+                  <button
+                    ${interactive ? `onclick="setScreenState('T08', 'normal')"` : ''}
+                    class="w-full h-12 rounded-xl bg-[#C2410C] hover:bg-[#9A3412] text-white ds-btn-text transition-colors cursor-pointer"
+                  >
+                    Tentar novamente
+                  </button>
+                </div>
+              ` : `
+                <!-- CARDS DE SOLICITAÇÕES -->
+                <div class="space-y-3">
+                  <h3 class="ds-h3 text-[#0F172A]">Novas Solicitações</h3>
+                  ${demands.map(d => `
+                    <article class="bg-[#FFFFFF] border border-[#CBD5E1] rounded-xl p-4 shadow-sm space-y-3">
+                      <div class="flex items-start justify-between gap-2">
+                        <div>
+                          <h4 class="ds-h3 text-[#0F172A]">${d.title}</h4>
+                          <p class="ds-secondary text-[#475569] mt-0.5">${d.area} • ${d.dist}</p>
+                        </div>
+                        ${d.urgent ? `<span class="px-2 py-0.5 rounded-full bg-[#FFEDD5] text-[#C2410C] ds-caption font-semibold shrink-0">Novo</span>` : ''}
+                      </div>
+
+                      <div class="flex items-center justify-between text-[#475569] ds-caption bg-[#F8FAFC] px-3 py-2 rounded-lg border border-[#CBD5E1]/60">
+                        <span>Cliente: <strong class="text-[#0F172A]">${d.client}</strong></span>
+                        <span class="inline-flex items-center gap-1 font-medium text-[#0F172A]">📷 ${d.photos}</span>
+                      </div>
+
+                      <button
+                        ${interactive ? `onclick="showToast('Abrindo orçamento de ${d.client}...'); navigateTo('T06')"` : ''}
+                        class="w-full h-11 rounded-xl bg-[#C2410C] hover:bg-[#9A3412] text-white ds-label transition-colors cursor-pointer"
+                      >
+                        Ver Orçamento
+                      </button>
+                    </article>
+                  `).join('')}
+                </div>
+              `}
+            </div>
+
+            ${renderProBottomNav('demandas', interactive)}
+          </div>
+        `;
+      }
+
+      // -----------------------------------------------------------------------
+      // T12 — CARTEIRA / PAGAMENTOS (PROFISSIONAL)
+      // -----------------------------------------------------------------------
+      if (screenId === 'T12') {
+        const history = [
+          { title: 'Reparo de tomada — Lucas M.', status: 'Pago', type: 'paid', value: 'R$ 120,00', date: '18/11' },
+          { title: 'Troca de disjuntor — Ana P.', status: 'Retido (Seguro)', type: 'held', value: 'R$ 180,00', date: '17/11' },
+          { title: 'Instalação de chuveiro — João S.', status: 'Pago', type: 'paid', value: 'R$ 300,00', date: '14/11' },
+        ];
+
+        return `
+          <div class="flex-1 flex flex-col overflow-hidden bg-[#F8FAFC]">
+            <!-- Topo -->
+            <header class="bg-[#FFFFFF] px-4 py-3.5 border-b border-[#CBD5E1] flex items-center gap-2 shrink-0">
+              <button
+                ${interactive ? `onclick="navigateTo('T08')"` : ''}
+                class="p-1.5 -ml-1.5 rounded-lg text-[#0F172A] hover:bg-[#F8FAFC] cursor-pointer"
+                aria-label="Voltar ao painel"
+              >
+                ${ICONS.back}
+              </button>
+              <h2 class="ds-h2 text-[#0F172A]">Carteira Segura</h2>
+            </header>
+
+            <!-- Conteúdo -->
+            <div class="flex-1 overflow-y-auto phone-scroll p-4 space-y-5">
+              <!-- Dois Blocos Financeiros Lado a Lado -->
+              <div class="grid grid-cols-2 gap-3">
+                <div class="bg-[#F0FDF4] border-2 border-[#15803D] rounded-xl p-3.5 space-y-1.5">
+                  <div class="flex items-center gap-1 text-[#15803D] ds-caption font-semibold">
+                    ${ICONS.checkCircle}
+                    <span>Saldo Disponível</span>
+                  </div>
+                  <div class="font-poppins font-bold text-xl text-[#15803D]">R$ 420,00</div>
+                  <div class="ds-caption text-[#15803D]/80">Pronto para saque</div>
+                </div>
+
+                <div class="bg-[#FFFBEB] border-2 border-[#B45309] rounded-xl p-3.5 space-y-1.5">
+                  <div class="flex items-center gap-1 text-[#B45309] ds-caption font-semibold">
+                    ${ICONS.lock}
+                    <span>Retido (Seguro)</span>
+                  </div>
+                  <div class="font-poppins font-bold text-xl text-[#B45309]">R$ 180,00</div>
+                  <div class="ds-caption text-[#B45309]/85">Aguardando conclusão</div>
+                </div>
+              </div>
+
+              <!-- Ação de Saque -->
+              <button
+                ${interactive ? `onclick="showToast('Transferência Pix de R$ 420,00 simulada com sucesso!')"` : ''}
+                class="w-full h-12 rounded-xl bg-[#C2410C] hover:bg-[#9A3412] text-white ds-btn-text shadow-sm transition-colors cursor-pointer"
+              >
+                Transferir Saldo via Pix
+              </button>
+
+              <!-- Histórico de Serviços -->
+              <div class="space-y-3">
+                <h3 class="ds-h3 text-[#0F172A]">Histórico de Serviços</h3>
+                ${history.map(item => {
+                  const isPaid = item.type === 'paid';
+                  return `
+                    <div class="bg-[#FFFFFF] border border-[#CBD5E1] rounded-xl p-3.5 shadow-sm space-y-2">
+                      <div class="flex items-start justify-between gap-2">
+                        <span class="ds-label text-[#0F172A]">${item.title}</span>
+                        <span class="ds-h3 text-[#0F172A] shrink-0">${item.value}</span>
+                      </div>
+                      <div class="flex items-center justify-between">
+                        <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full ds-caption font-semibold ${
+                          isPaid
+                            ? 'bg-[#F0FDF4] text-[#15803D] border border-[#15803D]/25'
+                            : 'bg-[#FFFBEB] text-[#B45309] border border-[#B45309]/25'
+                        }">
+                          ${isPaid ? ICONS.checkCircle : ICONS.lock}
+                          <span>${item.status}</span>
+                        </span>
+                        <span class="ds-caption text-[#475569]">${item.date}</span>
+                      </div>
+                    </div>
+                  `;
+                }).join('')}
+              </div>
+            </div>
+
+            ${renderProBottomNav('carteira', interactive)}
+          </div>
+        `;
+      }
+
+      return '';
+    }
+
+    // =========================================================================
+    // 7. INTERAÇÕES INTERNAS DAS TELAS
+    // =========================================================================
+    function selectCategory(cat) {
+      state.selectedCategory = cat;
+      renderPrototypeView();
+      showToast(`Categoria "${cat}" selecionada`);
+    }
+
+    function handleSearchSubmit() {
+      state.screenStates.T03 = 'normal';
+      navigateTo('T03');
+    }
+
+    function toggleQuotePhoto() {
+      state.quoteHasPhoto = !state.quoteHasPhoto;
+      renderPrototypeView();
+      showToast(state.quoteHasPhoto ? 'Foto anexada ao orçamento!' : 'Foto removida.');
+    }
+
+    function submitQuoteForm() {
+      const textarea = document.getElementById('t05-desc');
+      if (textarea) state.quoteText = textarea.value;
+      if (state.quoteText.trim().length < 15) {
+        state.screenStates.T05 = 'error';
+        showToast('Validação: mínimo de 15 caracteres (T05-B)');
+      } else {
+        state.screenStates.T05 = 'success';
+        showToast('Orçamento enviado com sucesso! (T05-C)');
+      }
+      renderPrototypeView();
+    }
+
+    function handleCloseDealInChat() {
+      state.chatPaymentClosed = true;
+      renderPrototypeView();
+      showToast('Pagamento retido com segurança na plataforma!');
+    }
+
+    function sendChatMessage() {
+      const input = document.getElementById('t06-chat-input');
+      if (!input) return;
+      const text = input.value.trim();
+      if (!text) return;
+      const now = new Date();
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      state.chatMessages.push({ from: 'lucas', text, time: `${hh}:${mm}` });
+      renderPrototypeView();
+      setTimeout(() => {
+        const box = document.getElementById('t06-messages');
+        if (box) box.scrollTop = box.scrollHeight;
+      }, 30);
+    }
+
+    function toggleTabOrderBadges(checked) {
+      state.showTabOrder = checked;
+      renderPrototypeView();
+    }
+
+    // =========================================================================
+    // 8. NAVEGAÇÃO PRINCIPAL E RENDERIZAÇÃO DOS PAINÉIS AUXILIARES
+    // =========================================================================
+    function switchMainTab(tab) {
+      state.mainTab = tab;
+
+      const tabs = ['prototype', 'gallery', 'ds'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`tab-btn-${t}`);
+        const view = document.getElementById(`view-${t}`);
+        if (t === tab) {
+          btn.className = 'px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold bg-[#1D4ED8] text-white shadow-sm transition-all cursor-pointer';
+          view.classList.remove('hidden');
+        } else {
+          btn.className = 'px-3.5 py-2 rounded-lg text-xs sm:text-sm font-semibold text-[#475569] hover:text-[#0F172A] hover:bg-[#FFFFFF] transition-all cursor-pointer';
+          view.classList.add('hidden');
+        }
+      });
+
+      if (tab === 'prototype') renderPrototypeView();
+      if (tab === 'gallery') renderGalleryView();
+      if (tab === 'ds') renderDesignSystemView();
+    }
+
+    function navigateTo(screenId) {
+      state.activeScreen = screenId;
+      if (state.mainTab !== 'prototype') {
+        switchMainTab('prototype');
+      } else {
+        renderPrototypeView();
+      }
+    }
+
+    function setScreenState(screenId, newState) {
+      state.screenStates[screenId] = newState;
+      renderPrototypeView();
+    }
+
+    function renderPrototypeView() {
+      // 1. Renderizar menu lateral de telas
+      const navContainer = document.getElementById('screen-nav-list');
+      const groups = ['Acesso', 'Fluxo do Morador (Lucas)', 'Fluxo do Profissional (Roberto)'];
+      navContainer.innerHTML = groups.map(group => {
+        const groupScreens = SCREENS.filter(s => s.group === group);
+        const isPro = group.includes('Profissional');
+        return `
+          <div>
+            <div class="text-[11px] font-bold uppercase tracking-wider mb-1.5 ${isPro ? 'text-[#C2410C]' : 'text-[#475569]'}">
+              ${group}
+            </div>
+            <div class="space-y-1">
+              ${groupScreens.map(s => {
+                const active = s.id === state.activeScreen;
+                const activeCls = s.accent === 'pro'
+                  ? 'bg-[#FFEDD5] text-[#C2410C] border-[#C2410C]/40 font-semibold'
+                  : 'bg-[#DBEAFE] text-[#1E3A8A] border-[#1D4ED8]/40 font-semibold';
+                return `
+                  <button
+                    onclick="navigateTo('${s.id}')"
+                    class="w-full text-left px-3 py-2 rounded-xl border text-xs flex items-center justify-between transition-colors cursor-pointer ${
+                      active ? activeCls : 'bg-[#FFFFFF] text-[#0F172A] border-transparent hover:bg-[#F8FAFC]'
+                    }"
+                  >
+                    <span class="truncate"><strong class="mr-1.5">${s.code}</strong> ${s.name}</span>
+                    ${active ? '<span class="w-1.5 h-1.5 rounded-full bg-current shrink-0"></span>' : ''}
+                  </button>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // 2. Renderizar controles de estado (quando T03, T05 ou T08)
+      const stateCard = document.getElementById('state-controls-card');
+      const stateBtns = document.getElementById('state-controls-buttons');
+      const tabToggleWrap = document.getElementById('tab-order-toggle-wrapper');
+
+      const stateOptionsMap = {
+        T03: [
+          { key: 'normal', label: 'Normal (3 resultados)' },
+          { key: 'empty', label: 'T03-B — Sem resultados' },
+        ],
+        T05: [
+          { key: 'normal', label: 'Normal (Formulário)' },
+          { key: 'error', label: 'T05-B — Erro + Foco visível' },
+          { key: 'success', label: 'T05-C — Pedido enviado' },
+        ],
+        T08: [
+          { key: 'normal', label: 'Normal (Demandas)' },
+          { key: 'error', label: 'T08-B — Falha de carregamento' },
+        ],
+      };
+
+      const opts = stateOptionsMap[state.activeScreen];
+      if (opts) {
+        stateCard.classList.remove('hidden');
+        const curr = state.screenStates[state.activeScreen];
+        stateBtns.innerHTML = opts.map(o => {
+          const isCurr = o.key === curr;
+          return `
+            <button
+              onclick="setScreenState('${state.activeScreen}', '${o.key}')"
+              class="w-full text-left px-3 py-2 rounded-xl text-xs font-semibold border transition-colors cursor-pointer ${
+                isCurr
+                  ? 'bg-[#0F172A] text-white border-[#0F172A]'
+                  : 'bg-[#F8FAFC] text-[#475569] border-[#CBD5E1] hover:text-[#0F172A]'
+              }"
+            >
+              ${o.label}
+            </button>
+          `;
+        }).join('');
+
+        if (state.activeScreen === 'T05' && curr === 'error') {
+          tabToggleWrap.classList.remove('hidden');
+          document.getElementById('toggle-tab-order').checked = state.showTabOrder;
+        } else {
+          tabToggleWrap.classList.add('hidden');
+        }
+      } else {
+        stateCard.classList.add('hidden');
+      }
+
+      // 3. Atualizar badge e nome acima do frame
+      const meta = SCREENS.find(s => s.id === state.activeScreen);
+      const badgeEl = document.getElementById('active-screen-badge');
+      const nameEl = document.getElementById('active-screen-name');
+
+      let suffixCode = meta.code;
+      if (state.activeScreen === 'T03' && state.screenStates.T03 === 'empty') suffixCode = 'T03-B';
+      if (state.activeScreen === 'T05' && state.screenStates.T05 === 'error') suffixCode = 'T05-B';
+      if (state.activeScreen === 'T05' && state.screenStates.T05 === 'success') suffixCode = 'T05-C';
+      if (state.activeScreen === 'T08' && state.screenStates.T08 === 'error') suffixCode = 'T08-B';
+
+      badgeEl.textContent = suffixCode;
+      badgeEl.className = meta.accent === 'pro'
+        ? 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#FFEDD5] text-[#C2410C]'
+        : 'px-2.5 py-0.5 rounded-full text-xs font-bold bg-[#DBEAFE] text-[#1E3A8A]';
+      nameEl.textContent = meta.name;
+
+      // 4. Renderizar tela dentro do smartphone
+      document.getElementById('phone-viewport').innerHTML = renderScreenHTML(state.activeScreen, { interactive: true });
+
+      // 5. Renderizar Inspetor (Coluna Direita)
+      const colorsEl = document.getElementById('inspector-colors');
+      colorsEl.innerHTML = meta.colors.map(hex => {
+        const info = COLOR_PALETTE.find(c => c.hex.toUpperCase() === hex.toUpperCase());
+        const name = info ? info.name : hex;
+        return `
+          <button
+            onclick="copyHex('${hex}')"
+            class="w-full flex items-center justify-between gap-2 p-2 rounded-xl border border-[#CBD5E1]/80 hover:border-[#1D4ED8] bg-[#F8FAFC] hover:bg-[#FFFFFF] transition-colors cursor-pointer text-left"
+            title="Copiar ${hex}"
+          >
+            <div class="flex items-center gap-2.5 min-w-0">
+              <span class="w-7 h-7 rounded-lg border border-[#CBD5E1] shrink-0" style="background:${hex};"></span>
+              <div class="min-w-0">
+                <div class="text-xs font-semibold text-[#0F172A] truncate">${name}</div>
+                <div class="text-[11px] font-mono text-[#475569]">${hex}</div>
+              </div>
+            </div>
+            <span class="text-[#64748B] shrink-0">${ICONS.copy}</span>
+          </button>
+        `;
+      }).join('');
+
+      const typoEl = document.getElementById('inspector-typography');
+      typoEl.innerHTML = meta.typo.map(tid => {
+        const t = TYPOGRAPHY_SCALE.find(item => item.id === tid);
+        if (!t) return '';
+        return `
+          <div class="p-2.5 rounded-xl bg-[#F8FAFC] border border-[#CBD5E1]/70">
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-xs font-bold text-[#0F172A]">${t.id} · ${t.family}</span>
+              <span class="text-[11px] font-mono text-[#1D4ED8] bg-[#DBEAFE] px-1.5 py-0.5 rounded">${t.size.split(' ')[0]}</span>
+            </div>
+            <div class="text-[11px] text-[#475569] mt-0.5">${t.weight}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // =========================================================================
+    // 9. RENDERIZAÇÃO DA ABA 2 — GALERIA LADO A LADO
+    // =========================================================================
+    function renderGalleryView() {
+      const grid = document.getElementById('gallery-grid');
+      const galleryScreens = ['T01', 'T02', 'T03', 'T04', 'T05', 'T08', 'T12'];
+
+      grid.innerHTML = galleryScreens.map(id => {
+        const meta = SCREENS.find(s => s.id === id);
+        const badgeCls = meta.accent === 'pro'
+          ? 'bg-[#FFEDD5] text-[#C2410C]'
+          : 'bg-[#DBEAFE] text-[#1E3A8A]';
+
+        return `
+          <div class="flex flex-col items-center group">
+            <div class="w-[265px] flex items-center justify-between mb-2 px-1">
+              <div class="flex items-center gap-1.5 min-w-0">
+                <span class="px-2 py-0.5 rounded-full text-[11px] font-bold ${badgeCls}">${meta.code}</span>
+                <span class="text-xs font-semibold text-[#0F172A] truncate">${meta.name}</span>
+              </div>
+              <button
+                onclick="navigateTo('${meta.id}')"
+                class="text-[11px] font-semibold text-[#1D4ED8] hover:underline shrink-0 cursor-pointer"
+              >
+                Abrir →
+              </button>
+            </div>
+
+            <div
+              onclick="navigateTo('${meta.id}')"
+              class="gallery-thumb-shell cursor-pointer transition-transform duration-200 group-hover:-translate-y-1 group-hover:ring-4 group-hover:ring-[#1D4ED8]/20"
+              role="button"
+              tabindex="0"
+              aria-label="Abrir tela ${meta.code} ${meta.name} no protótipo interativo"
+            >
+              <div class="gallery-thumb-scaler flex flex-col bg-[#F8FAFC]">
+                <!-- Mini status bar -->
+                <div class="h-7 bg-[#FFFFFF] px-5 flex items-center justify-between text-[11px] font-semibold text-[#0F172A] border-b border-[#F1F5F9] shrink-0">
+                  <span>19:54</span>
+                  <div class="w-14 h-3 bg-[#0F172A] rounded-full"></div>
+                  <span>100%</span>
+                </div>
+                <div class="flex-1 flex flex-col overflow-hidden">
+                  ${renderScreenHTML(id, { interactive: false, forceNormal: true })}
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // =========================================================================
+    // 10. RENDERIZAÇÃO DA ABA 3 — DESIGN SYSTEM (CORES E FONTES)
+    // =========================================================================
+    function renderDesignSystemView() {
+      // Cores agrupadas
+      const colorsContainer = document.getElementById('ds-colors-container');
+      const groups = [...new Set(COLOR_PALETTE.map(c => c.group))];
+
+      colorsContainer.innerHTML = groups.map(group => {
+        const items = COLOR_PALETTE.filter(c => c.group === group);
+        return `
+          <div class="space-y-3">
+            <h3 class="ds-h3 text-[#0F172A]">${group}</h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              ${items.map(c => {
+                const wcagCls = c.wcag === 'AAA'
+                  ? 'bg-[#F0FDF4] text-[#15803D] border-[#15803D]/30'
+                  : c.wcag === 'AA'
+                    ? 'bg-[#DBEAFE] text-[#1E3A8A] border-[#1D4ED8]/30'
+                    : 'bg-[#F1F5F9] text-[#475569] border-[#CBD5E1]';
+                return `
+                  <div class="bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl overflow-hidden flex flex-col">
+                    <div class="h-20 w-full border-b border-[#CBD5E1]/70 relative" style="background:${c.hex};">
+                      <button
+                        onclick="copyHex('${c.hex}')"
+                        class="absolute bottom-2 right-2 px-2.5 py-1 rounded-lg bg-[#FFFFFF]/95 text-[#0F172A] border border-[#CBD5E1] text-xs font-mono font-semibold flex items-center gap-1.5 shadow-sm hover:bg-[#0F172A] hover:text-white transition-colors cursor-pointer"
+                        title="Copiar código ${c.hex}"
+                      >
+                        <span>${c.hex}</span>
+                        ${ICONS.copy}
+                      </button>
+                    </div>
+                    <div class="p-3.5 flex-1 flex flex-col justify-between gap-2.5">
+                      <div>
+                        <div class="flex items-center justify-between gap-2">
+                          <h4 class="ds-label text-[#0F172A]">${c.name}</h4>
+                          <span class="px-2 py-0.5 rounded-full text-[11px] font-bold border ${wcagCls}">
+                            ${c.wcag}
+                          </span>
+                        </div>
+                        <p class="ds-caption text-[#475569] mt-1 leading-relaxed">${c.role}</p>
+                      </div>
+                      <div class="pt-2 border-t border-[#CBD5E1]/60 flex items-center justify-between text-[11px] text-[#475569]">
+                        <span>Contraste:</span>
+                        <span class="font-semibold text-[#0F172A]">${c.contrast}</span>
+                      </div>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Escala Tipográfica ao vivo
+      const typoContainer = document.getElementById('ds-typography-container');
+      typoContainer.innerHTML = TYPOGRAPHY_SCALE.map(t => `
+        <div class="py-4 grid grid-cols-1 lg:grid-cols-12 gap-3 items-center">
+          <div class="lg:col-span-4 space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded bg-[#DBEAFE] text-[#1E3A8A] text-xs font-bold">${t.id}</span>
+              <span class="ds-label text-[#0F172A]">${t.label}</span>
+            </div>
+            <div class="ds-caption text-[#475569]">
+              <strong>${t.family}</strong> · ${t.weight} · <span class="font-mono">${t.size}</span>
+            </div>
+          </div>
+          <div class="lg:col-span-5">
+            <div class="${t.cls} text-[#0F172A]">${t.sample}</div>
+          </div>
+          <div class="lg:col-span-3">
+            <p class="ds-caption text-[#475569]">${t.usage}</p>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Inicialização
+    window.addEventListener('DOMContentLoaded', () => {
+      switchMainTab('prototype');
+    });
+  </script>
+</body>
+</html>
